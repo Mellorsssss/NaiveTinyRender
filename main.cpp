@@ -107,23 +107,21 @@ void triangle(Vec2i a, Vec2i b, Vec2i c, TGAImage &img, TGAColor color)
     if (b.y > c.y)
         std::swap(b, c);
 
-    /* draw the bottom part */
     int total_height = c.y - a.y + 1;
-    int segment_height = b.y - a.y + 1;
-    int total_width = c.x - a.x + 1;
-    int segment_width = b.x - a.x + 1;
-    float alpha = (float)(1.0 / total_height);
-    float beta = (float)(1.0 / segment_height);
-    for (int y = a.y; y <= b.y; y++)
+    int bottom_seg_height = b.y - a.y + 1;
+    int top_seg_height = c.y - b.y + 1;
+    for (int y = a.y; y <= c.y; y++)
     {
-        int x1 = a.x + alpha * total_width * (y - a.y);
-        int x2 = a.x + beta * segment_width * (y - a.y);
+        bool is_draw_bottom = (y <= b.y);
+        float alpha = (float)1.0 / total_height;
+        float beta = is_draw_bottom ? (float)1.0 / bottom_seg_height : (float)1.0 / top_seg_height;
+        int x1 = a.x + alpha * (y - a.y) * (c.x - a.x);
+        int x2 = is_draw_bottom ? (int)a.x + beta * (y - a.y) * (b.x - a.x) : (int)b.x + beta * (y - b.y) * (c.x - b.x);
         if (x1 > x2)
             std::swap(x1, x2);
-
-        for (int tem_x = x1; tem_x <= x2; tem_x++)
+        for (int i = x1; i <= x2; i++)
         {
-            img.set(y, tem_x, color);
+            img.set(y, i, color);
         }
     }
 }
@@ -168,6 +166,7 @@ int main(int argc, char **argv)
 
     triangle(t0[0], t0[1], t0[2], image, red);
     triangle(t1[0], t1[1], t1[2], image, white);
+    triangle(t2[0], t2[1], t2[2], image, white);
 
     image.flip_vertically(); // i want to have the origin at the left bottom corner of the image
     image.write_tga_file("output.tga");
