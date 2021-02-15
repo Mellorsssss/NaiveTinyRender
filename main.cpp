@@ -14,8 +14,13 @@ struct Triangle3D
 {
 
     Vec3f a, b, c;
+    Vec2f uv_[3];
 
-    Triangle3D(Vec3f x, Vec3f y, Vec3f z) : a(x), b(y), c(z) {}
+    Triangle3D(Vec3f x, Vec3f y, Vec3f z) : a(x), b(y), c(z), uv_() {}
+    void SetUV(Vec2f uv_coords, int i)
+    {
+        uv_[i] = uv_coords;
+    }
     std::vector<Vec3f> points() const { return std::vector<Vec3f>{a, b, c}; }
     Vec3f operator[](int index) const
     {
@@ -25,6 +30,7 @@ struct Triangle3D
             return b;
         if (index == 2)
             return c;
+        return Vec3f();
     }
 };
 
@@ -186,7 +192,7 @@ Vec3f ComputeBarycentric(const Triangle3D &t, Vec3f p)
     Vec3f u = edge_vec[0] ^ edge_vec[1];
     if (std::abs(u.z) > 1e-2)
     {
-        return Vec3f(1 - (u.x + u.y) / u.z, u.x / u.z, u.y / u.z);
+        return Vec3f(1.f - (u.x + u.y) / u.z, u.y / u.z, u.x / u.z);
     }
     return Vec3f(-1, 1, 1);
 }
@@ -196,7 +202,7 @@ int get_index(const int &x, const int &y, const int &scene_width)
     return x + y * scene_width;
 }
 
-void adv_triangle(const Triangle3D &t, float *z_buffer, TGAImage &img, const TGAColor &color)
+void adv_triangle(const Triangle3D &t, float *z_buffer, TGAImage &img, const TGAColor &color, const TGAImage &texture)
 {
     Vec2i bbox_min(std::numeric_limits<int>::max(), std::numeric_limits<int>::max());
     Vec2i bbox_max(-1, -1);
@@ -208,8 +214,6 @@ void adv_triangle(const Triangle3D &t, float *z_buffer, TGAImage &img, const TGA
         bbox_max.y = std::max((int)point.y, bbox_max.y);
     }
 
-    std::cout << "max" << bbox_max << std::endl;
-    std::cout << "min" << bbox_min << std::endl;
     for (int x = bbox_min.x; x <= bbox_max.x; x++)
     {
         for (int y = bbox_min.y; y <= bbox_max.y; y++)
@@ -220,10 +224,19 @@ void adv_triangle(const Triangle3D &t, float *z_buffer, TGAImage &img, const TGA
                 continue;
             for (int i = 0; i < 3; i++)
                 P.z += barycentric_coords[i] * t[i].z;
+
+            Vec2f P_uv(0, 0);
+            for (int i = 0; i < 3; i++)
+                P_uv = P_uv + t.uv_[i] * barycentric_coords[i];
+
             if (z_buffer[get_index(x, y, width)] < P.z)
             {
                 z_buffer[get_index(x, y, width)] = P.z;
-                img.set(x, y, color);
+                float uv_u = std::round(P_uv.x * texture.get_width());
+                float uv_v = std::round(P_uv.y * texture.get_height());
+                // std::cout << uv_u << " " << uv_v << std::endl;
+                img.set(x, y, texture.get(uv_u, uv_v));
+                // img.set(x, y, color);
             }
         }
     }
@@ -248,6 +261,9 @@ int main(int argc, char **argv)
     }
 
     TGAImage image(width, height, TGAImage::RGB);
+    TGAImage texture;
+    texture.read_tga_file("../obj/african_head_diffuse.tga");
+    texture.flip_vertically();
 
     float z_buffer[width * height];
     for (int i = 0; i < width * height; i++)
@@ -257,21 +273,25 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < model->nfaces(); i++)
     {
-        std::cout << i << std::endl;
         auto cur_face = model->face(i);
         Vec3f screen_coords[3];
         Vec3f world_coords[3];
+        Vec2f uv_coords[3];
         for (int j = 0; j < 3; j++)
         {
-            world_coords[j] = model->vert(cur_face[j]);
+            world_coords[j] = model->vert(cur_face[j].v_ind_);
+            uv_coords[j] = model->texture(cur_face[j].vt_ind_);
             screen_coords[j] = Vec3f(int((world_coords[j].x + 1.) * width / 2. + .5), int((-world_coords[j].y + 1.) * height / 2. + .5), world_coords[j].z);
         }
         Vec3f n = (world_coords[1] - world_coords[0]) ^ (world_coords[2] - world_coords[0]);
         n.normalize();
-        float intensity = n * light_dir;
-        if (intensity > 0)
+        float light_intensity = n * light_dir;
+        if (light_intensity > 0)
         {
-            adv_triangle(Triangle3D(screen_coords[0], screen_coords[1], screen_coords[2]), z_buffer, image, TGAColor(intensity * 255, intensity * 255, intensity * 255, 255));
+            auto t = Triangle3D(screen_coords[0], screen_coords[1], screen_coords[2]);
+            for (int i = 0; i < 3; i++)
+                t.SetUV(uv_coords[i], i);
+            adv_triangle(t, z_buffer, image, TGAColor(light_intensity * 255, light_intensity * 255, light_intensity * 255, 255), texture);
         }
     }
 

@@ -5,7 +5,7 @@
 #include <vector>
 #include "model.h"
 
-Model::Model(const char *filename) : verts_(), faces_()
+Model::Model(const char *filename) : verts_(), textures_(), faces_()
 {
     std::ifstream in;
     in.open(filename, std::ifstream::in);
@@ -17,6 +17,7 @@ Model::Model(const char *filename) : verts_(), faces_()
         std::getline(in, line);
         std::istringstream iss(line.c_str());
         char trash;
+
         if (!line.compare(0, 2, "v "))
         {
             iss >> trash;
@@ -24,43 +25,68 @@ Model::Model(const char *filename) : verts_(), faces_()
             for (int i = 0; i < 3; i++)
                 iss >> v.raw[i];
             verts_.push_back(v);
+            continue;
         }
-        else if (!line.compare(0, 2, "f "))
+
+        if (!line.compare(0, 2, "vt"))
         {
-            std::vector<int> f;
-            int itrash, idx;
+            iss >> trash >> trash;
+            Vec2f v;
+            for (int i = 0; i < 2; i++)
+                iss >> v.raw[i];
+            std::cout << v << std::endl;
+            textures_.push_back(v);
+            continue;
+        }
+
+        if (!line.compare(0, 2, "f "))
+        {
+            std::vector<face_propertes> f;
+            int itrash, v_idx, vt_idx;
             iss >> trash;
-            while (iss >> idx >> trash >> itrash >> trash >> itrash)
+            while (iss >> v_idx >> trash >> vt_idx >> trash >> itrash)
             {
-                idx--; // in wavefront obj all indices start at 1, not zero
-                f.push_back(idx);
+                v_idx--; // in wavefront obj all indices start at 1, not zero
+                vt_idx--;
+                f.push_back(face_propertes(v_idx, vt_idx));
             }
             faces_.push_back(f);
+            continue;
         }
     }
-    std::cerr << "# v# " << verts_.size() << " f# " << faces_.size() << std::endl;
+    std::cerr << "# v# " << verts_.size() << " vt# " << textures_.size() << " f# " << faces_.size() << std::endl;
 }
 
 Model::~Model()
 {
 }
 
-int Model::nverts()
+int Model::nverts() const
 {
     return (int)verts_.size();
 }
 
-int Model::nfaces()
+int Model::nfaces() const
 {
     return (int)faces_.size();
 }
 
-std::vector<int> Model::face(int idx)
+int Model::ntex_coords() const
+{
+    return (int)textures_.size();
+}
+
+std::vector<face_propertes> Model::face(int idx)
 {
     return faces_[idx];
 }
 
-Vec3f Model::vert(int i)
+Vec3f Model::vert(int i) const
 {
     return verts_[i];
+}
+
+Vec2f Model::texture(int i) const
+{
+    return textures_[i];
 }
