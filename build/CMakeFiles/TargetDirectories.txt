@@ -1,0 +1,3 @@
+/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/rebuild_cache.dir
+/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/Rasterizer.dir
+/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/edit_cache.dir

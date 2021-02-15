@@ -5,6 +5,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/* math lib , code from https://github.com/ssloy/tinyrenderer*/
 template <class t>
 struct Vec2
 {
@@ -51,6 +52,8 @@ struct Vec3
     inline Vec3<t> operator-(const Vec3<t> &v) const { return Vec3<t>(x - v.x, y - v.y, z - v.z); }
     inline Vec3<t> operator*(float f) const { return Vec3<t>(x * f, y * f, z * f); }
     inline t operator*(const Vec3<t> &v) const { return x * v.x + y * v.y + z * v.z; }
+    inline t &operator[](int index) { return raw[index]; }
+    inline t operator[](int index) const { return raw[index]; }
     float norm() const { return std::sqrt(x * x + y * y + z * z); }
     Vec3<t> &normalize(t l = 1)
     {
@@ -79,5 +82,10 @@ std::ostream &operator<<(std::ostream &s, Vec3<t> &v)
     s << "(" << v.x << ", " << v.y << ", " << v.z << ")\n";
     return s;
 }
+template <class t>
+inline Vec3<t> CrossProduct(const Vec3<t> &a, const Vec3<t> &b) { return Vec3<t>(a.y * b.z - b.y * a.z,
+                                                                                 b.x * a.z - a.x * b.z, a.x * b.y - a.y * b.x); };
 
+template <class t>
+inline t DotProduct(const Vec3<t> &a, const Vec3<t> &b) { return a.x * b.x + a.y * b.y + a.y * b.y; }
 #endif //__GEOMETRY_H__

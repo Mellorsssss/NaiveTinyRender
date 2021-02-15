@@ -4,6 +4,7 @@
 #include <vector>
 #include "geometry.h"
 
+/* obj loader, code from https://github.com/ssloy/tinyrenderer*/
 class Model
 {
 private:
