@@ -34,7 +34,6 @@ Model::Model(const char *filename) : verts_(), textures_(), faces_()
             Vec2f v;
             for (int i = 0; i < 2; i++)
                 iss >> v.raw[i];
-            std::cout << v << std::endl;
             textures_.push_back(v);
             continue;
         }

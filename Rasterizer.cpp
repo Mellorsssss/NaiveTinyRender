@@ -1,13 +1,14 @@
 #include "Rasterizer.h"
-
+#include <time.h>
 void Rasterizer::Render(std::vector<Triangle3D> meshs)
 {
+    std::fill(z_buffer.begin(), z_buffer.end(), -9999999.f);
+    img_.clear();
     for (auto t : meshs)
     {
         DrawTriangle(t, white);
     }
     img_.flip_vertically();
-    img_.write_tga_file("output.tga");
 }
 
 bool Rasterizer::LoadTexture(std::string texture_filename)
@@ -121,6 +122,7 @@ void Rasterizer::DrawTriangle(const Triangle3D &t, const TGAColor &color)
         bbox_max.y = std::max((int)point.y, bbox_max.y);
     }
 
+    // #pragma omp parallel for shared(z_buffer) num_threads(8)
     for (int x = bbox_min.x; x <= bbox_max.x; x++)
     {
         for (int y = bbox_min.y; y <= bbox_max.y; y++)
@@ -134,7 +136,6 @@ void Rasterizer::DrawTriangle(const Triangle3D &t, const TGAColor &color)
 
             Vec2f P_uv(0, 0);
             P_uv = BarycentricInterpolation(barycentric_coords, t.uv_[0], t.uv_[1], t.uv_[2]);
-
             if (z_buffer[get_index(x, y)] < P.z)
             {
                 z_buffer[get_index(x, y)] = P.z;

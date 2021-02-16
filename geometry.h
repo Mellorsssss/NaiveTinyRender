@@ -2,6 +2,7 @@
 #define __GEOMETRY_H__
 
 #include <cmath>
+#include <assert.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -69,6 +70,110 @@ typedef Vec2<int> Vec2i;
 typedef Vec3<float> Vec3f;
 typedef Vec3<int> Vec3i;
 
+template <class T>
+class Matrix
+{
+private:
+    std::vector<std::vector<T>> m_;
+    int row_num_, col_num_;
+
+public:
+    Matrix(int row_num, int col_num) : row_num_(row_num), col_num_(col_num)
+    {
+        m_.resize(row_num);
+        for (auto row : m_)
+        {
+            row.resize(col_num);
+        }
+    }
+
+    int GetRowNumber() const { return row_num_; }
+
+    int GetColNumber() const { return col_num_; }
+
+    std::vector<T> operator[](int index) const
+    {
+        assert(index < row_num_);
+        return m_[index];
+    }
+
+    std::vector<T> &operator[](int index)
+    {
+        assert(index < row_num_);
+        return m_[index];
+    }
+
+    Matrix<T> operator*(const Matrix &M) const
+    {
+        assert(M.GetRowNumber() == col_num_);
+        Matrix<T> res(row_num_, M.col_num_);
+        for (int i = 0; i < row_num_; i++)
+        {
+            for (int j = 0; j < M.col_num_; j++)
+            {
+                res[i][j] = 0.f;
+                for (int k = 0; k < col_num_; k++)
+                    res[i][j] += m_[i][k] * M.m_[k][j];
+            }
+        }
+        return res;
+    }
+
+    Matrix<T> Identity() const
+    {
+        Matrix<T> res(row_num_, col_num_);
+        for (int i = 0; i < row_num_; i++)
+        {
+            for (int j = 0; j < col_num_; j++)
+            {
+                res[i][j] = (i == j);
+            }
+        }
+        return res;
+    }
+
+    std::vector<T> GetCol(int col_num) const
+    {
+        assert(col_num < col_num_);
+        std::vector<T> res;
+        res.reserve(row_num_);
+        for (int i = 0; i < row_num_; i++)
+            res.push_back(m_[i][col_num]);
+        return res;
+    }
+
+    std::vector<T> GetRow(int row_num) const
+    {
+        assert(row_num < row_num_);
+        return m_[row_num_];
+    }
+
+    Matrix<T> &SetRow(std::vector<T> row, int row_ind)
+    {
+        assert(row.size() == col_num_);
+        m_[row_ind].clear();
+        m_[row_ind] = row;
+        return *this;
+    }
+
+    Matrix<T> &SetCol(std::vector<T> col, int col_ind)
+    {
+        assert(col.size() == row_num_);
+        for (int i = 0; i < row_num_; i++)
+        {
+            m_[i][col_ind] = col[i];
+        }
+        return *this;
+    }
+
+    Matrix<T> Transpose() const
+    {
+        Matrix<T> res(col_num_, row_num_);
+        for (int i = 0; i < col_num_; i++)
+            res[i] = GetCol(i);
+        return res;
+    }
+};
 template <class t>
 std::ostream &operator<<(std::ostream &s, Vec2<t> &v)
 {

@@ -9,6 +9,8 @@
 /home/cs18/NTRender/NaiveTinyRender/Rasterizer.cpp
 Rasterizer.h
 /home/cs18/NTRender/NaiveTinyRender/Rasterizer.h
+time.h
+-
 
 /home/cs18/NTRender/NaiveTinyRender/Rasterizer.h
 tgaimage.h
@@ -16,6 +18,10 @@ tgaimage.h
 Triangle.h
 /home/cs18/NTRender/NaiveTinyRender/Triangle.h
 iostream
+-
+vector
+-
+omp.h
 -
 
 /home/cs18/NTRender/NaiveTinyRender/Triangle.h
@@ -28,6 +34,8 @@ vector
 
 /home/cs18/NTRender/NaiveTinyRender/geometry.h
 cmath
+-
+assert.h
 -
 
 /home/cs18/NTRender/NaiveTinyRender/main.cpp
@@ -48,6 +56,10 @@ Triangle.h
 Rasterizer.h
 /home/cs18/NTRender/NaiveTinyRender/Rasterizer.h
 opencv2/opencv.hpp
+-
+time.h
+-
+stdio.h
 -
 
 /home/cs18/NTRender/NaiveTinyRender/model.cpp

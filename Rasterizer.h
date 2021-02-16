@@ -3,14 +3,15 @@
 #include "tgaimage.h"
 #include "Triangle.h"
 #include <iostream>
+#include <vector>
+#include <omp.h>
 
 class Rasterizer
 {
 private:
     TGAImage img_;
     TGAImage texture_;
-
-    float *z_buffer;
+    std::vector<float> z_buffer;
     int w_;
     int h_;
 
@@ -18,14 +19,14 @@ public:
     Rasterizer(int w, int h) : w_(w), h_(h)
     {
         img_ = TGAImage(w, h, TGAImage::RGB);
-        z_buffer = new float[w * h];
-        for (int i = 0; i < w * h; i++)
-            z_buffer[i] = -999999999;
+        z_buffer.resize(w_ * h_);
+        std::fill(z_buffer.begin(), z_buffer.end(), -9999999);
     }
-    ~Rasterizer() { delete z_buffer; }
     void Render(std::vector<Triangle3D> meshs);
 
     bool LoadTexture(std::string texture_filename);
+
+    inline uint8_t *GetBuffer() { return img_.buffer(); }
 
 private:
     inline int get_index(int x, int y)
