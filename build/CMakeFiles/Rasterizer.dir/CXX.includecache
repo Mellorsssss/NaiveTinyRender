@@ -6,6 +6,24 @@
 
 #IncludeRegexTransform: 
 
+/home/cs18/NTRender/NaiveTinyRender/Rasterizer.cpp
+Rasterizer.h
+/home/cs18/NTRender/NaiveTinyRender/Rasterizer.h
+
+/home/cs18/NTRender/NaiveTinyRender/Rasterizer.h
+tgaimage.h
+/home/cs18/NTRender/NaiveTinyRender/tgaimage.h
+Triangle.h
+/home/cs18/NTRender/NaiveTinyRender/Triangle.h
+iostream
+-
+
+/home/cs18/NTRender/NaiveTinyRender/Triangle.h
+geometry.h
+/home/cs18/NTRender/NaiveTinyRender/geometry.h
+vector
+-
+
 /home/cs18/NTRender/NaiveTinyRender/geometry.cpp
 
 /home/cs18/NTRender/NaiveTinyRender/geometry.h
@@ -25,6 +43,10 @@ model.h
 /home/cs18/NTRender/NaiveTinyRender/model.h
 geometry.h
 /home/cs18/NTRender/NaiveTinyRender/geometry.h
+Triangle.h
+/home/cs18/NTRender/NaiveTinyRender/Triangle.h
+Rasterizer.h
+/home/cs18/NTRender/NaiveTinyRender/Rasterizer.h
 opencv2/opencv.hpp
 -
 

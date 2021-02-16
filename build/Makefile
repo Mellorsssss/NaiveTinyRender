@@ -123,6 +123,33 @@ Rasterizer/fast:
 	$(MAKE) -f CMakeFiles/Rasterizer.dir/build.make CMakeFiles/Rasterizer.dir/build
 .PHONY : Rasterizer/fast
 
+Rasterizer.o: Rasterizer.cpp.o
+
+.PHONY : Rasterizer.o
+
+# target to build an object file
+Rasterizer.cpp.o:
+	$(MAKE) -f CMakeFiles/Rasterizer.dir/build.make CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o
+.PHONY : Rasterizer.cpp.o
+
+Rasterizer.i: Rasterizer.cpp.i
+
+.PHONY : Rasterizer.i
+
+# target to preprocess a source file
+Rasterizer.cpp.i:
+	$(MAKE) -f CMakeFiles/Rasterizer.dir/build.make CMakeFiles/Rasterizer.dir/Rasterizer.cpp.i
+.PHONY : Rasterizer.cpp.i
+
+Rasterizer.s: Rasterizer.cpp.s
+
+.PHONY : Rasterizer.s
+
+# target to generate assembly for a file
+Rasterizer.cpp.s:
+	$(MAKE) -f CMakeFiles/Rasterizer.dir/build.make CMakeFiles/Rasterizer.dir/Rasterizer.cpp.s
+.PHONY : Rasterizer.cpp.s
+
 geometry.o: geometry.cpp.o
 
 .PHONY : geometry.o
@@ -240,6 +267,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Rasterizer"
 	@echo "... edit_cache"
+	@echo "... Rasterizer.o"
+	@echo "... Rasterizer.i"
+	@echo "... Rasterizer.s"
 	@echo "... geometry.o"
 	@echo "... geometry.i"
 	@echo "... geometry.s"

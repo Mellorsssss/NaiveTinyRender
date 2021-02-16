@@ -81,9 +81,33 @@ CMakeFiles/Rasterizer.dir/main.cpp.o.provides: CMakeFiles/Rasterizer.dir/main.cp
 CMakeFiles/Rasterizer.dir/main.cpp.o.provides.build: CMakeFiles/Rasterizer.dir/main.cpp.o
 
 
+CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o: CMakeFiles/Rasterizer.dir/flags.make
+CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o: ../Rasterizer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o -c /home/cs18/NTRender/NaiveTinyRender/Rasterizer.cpp
+
+CMakeFiles/Rasterizer.dir/Rasterizer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Rasterizer.dir/Rasterizer.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cs18/NTRender/NaiveTinyRender/Rasterizer.cpp > CMakeFiles/Rasterizer.dir/Rasterizer.cpp.i
+
+CMakeFiles/Rasterizer.dir/Rasterizer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Rasterizer.dir/Rasterizer.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cs18/NTRender/NaiveTinyRender/Rasterizer.cpp -o CMakeFiles/Rasterizer.dir/Rasterizer.cpp.s
+
+CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o.requires:
+
+.PHONY : CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o.requires
+
+CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o.provides: CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o.requires
+	$(MAKE) -f CMakeFiles/Rasterizer.dir/build.make CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o.provides.build
+.PHONY : CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o.provides
+
+CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o.provides.build: CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o
+
+
 CMakeFiles/Rasterizer.dir/geometry.cpp.o: CMakeFiles/Rasterizer.dir/flags.make
 CMakeFiles/Rasterizer.dir/geometry.cpp.o: ../geometry.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Rasterizer.dir/geometry.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Rasterizer.dir/geometry.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Rasterizer.dir/geometry.cpp.o -c /home/cs18/NTRender/NaiveTinyRender/geometry.cpp
 
 CMakeFiles/Rasterizer.dir/geometry.cpp.i: cmake_force
@@ -107,7 +131,7 @@ CMakeFiles/Rasterizer.dir/geometry.cpp.o.provides.build: CMakeFiles/Rasterizer.d
 
 CMakeFiles/Rasterizer.dir/model.cpp.o: CMakeFiles/Rasterizer.dir/flags.make
 CMakeFiles/Rasterizer.dir/model.cpp.o: ../model.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Rasterizer.dir/model.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Rasterizer.dir/model.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Rasterizer.dir/model.cpp.o -c /home/cs18/NTRender/NaiveTinyRender/model.cpp
 
 CMakeFiles/Rasterizer.dir/model.cpp.i: cmake_force
@@ -131,7 +155,7 @@ CMakeFiles/Rasterizer.dir/model.cpp.o.provides.build: CMakeFiles/Rasterizer.dir/
 
 CMakeFiles/Rasterizer.dir/tgaimage.cpp.o: CMakeFiles/Rasterizer.dir/flags.make
 CMakeFiles/Rasterizer.dir/tgaimage.cpp.o: ../tgaimage.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Rasterizer.dir/tgaimage.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Rasterizer.dir/tgaimage.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Rasterizer.dir/tgaimage.cpp.o -c /home/cs18/NTRender/NaiveTinyRender/tgaimage.cpp
 
 CMakeFiles/Rasterizer.dir/tgaimage.cpp.i: cmake_force
@@ -156,6 +180,7 @@ CMakeFiles/Rasterizer.dir/tgaimage.cpp.o.provides.build: CMakeFiles/Rasterizer.d
 # Object files for target Rasterizer
 Rasterizer_OBJECTS = \
 "CMakeFiles/Rasterizer.dir/main.cpp.o" \
+"CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o" \
 "CMakeFiles/Rasterizer.dir/geometry.cpp.o" \
 "CMakeFiles/Rasterizer.dir/model.cpp.o" \
 "CMakeFiles/Rasterizer.dir/tgaimage.cpp.o"
@@ -164,6 +189,7 @@ Rasterizer_OBJECTS = \
 Rasterizer_EXTERNAL_OBJECTS =
 
 Rasterizer: CMakeFiles/Rasterizer.dir/main.cpp.o
+Rasterizer: CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o
 Rasterizer: CMakeFiles/Rasterizer.dir/geometry.cpp.o
 Rasterizer: CMakeFiles/Rasterizer.dir/model.cpp.o
 Rasterizer: CMakeFiles/Rasterizer.dir/tgaimage.cpp.o
@@ -210,7 +236,7 @@ Rasterizer: /usr/lib/x86_64-linux-gnu/libopencv_imgcodecs.so.3.2.0
 Rasterizer: /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.3.2.0
 Rasterizer: /usr/lib/x86_64-linux-gnu/libopencv_core.so.3.2.0
 Rasterizer: CMakeFiles/Rasterizer.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable Rasterizer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable Rasterizer"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Rasterizer.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -219,6 +245,7 @@ CMakeFiles/Rasterizer.dir/build: Rasterizer
 .PHONY : CMakeFiles/Rasterizer.dir/build
 
 CMakeFiles/Rasterizer.dir/requires: CMakeFiles/Rasterizer.dir/main.cpp.o.requires
+CMakeFiles/Rasterizer.dir/requires: CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o.requires
 CMakeFiles/Rasterizer.dir/requires: CMakeFiles/Rasterizer.dir/geometry.cpp.o.requires
 CMakeFiles/Rasterizer.dir/requires: CMakeFiles/Rasterizer.dir/model.cpp.o.requires
 CMakeFiles/Rasterizer.dir/requires: CMakeFiles/Rasterizer.dir/tgaimage.cpp.o.requires
