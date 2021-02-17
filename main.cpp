@@ -17,6 +17,22 @@ const int height = 512;
 int main(int argc, char **argv)
 {
 
+    vec3f t;
+    std::cout << t;
+    t[0] = 1.f;
+    t[1] = 2.f;
+    t[2] = 3.f;
+    std::cout << t;
+    vec3f b = t;
+    t = b + t;
+    std::cout << t;
+    t = b * t;
+    std::cout << t;
+    t = b - t;
+    std::cout << t;
+
+    return 0;
+
     Model *model = NULL;
     Rasterizer *rst = new Rasterizer(width, height);
 

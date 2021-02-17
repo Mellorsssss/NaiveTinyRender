@@ -1998,3 +1998,123 @@ make[1]: Leaving directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles
 
 Source file was:
 int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_332a1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_332a1.dir/build.make CMakeFiles/cmTC_332a1.dir/build
+make[1]: Entering directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_332a1.dir/src.cxx.o
+/usr/bin/c++    -fopenmp -Dflag_supported   -Wall -std=gnu++1z -o CMakeFiles/cmTC_332a1.dir/src.cxx.o -c /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_332a1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_332a1.dir/link.txt --verbose=1
+/usr/bin/c++   -fopenmp -Dflag_supported     CMakeFiles/cmTC_332a1.dir/src.cxx.o  -o cmTC_332a1 
+make[1]: Leaving directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5d950/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5d950.dir/build.make CMakeFiles/cmTC_5d950.dir/build
+make[1]: Entering directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_5d950.dir/src.cxx.o
+/usr/bin/c++    -fopenmp -Wall -Dflag_supported   -Wextra -std=gnu++1z -o CMakeFiles/cmTC_5d950.dir/src.cxx.o -c /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_5d950
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5d950.dir/link.txt --verbose=1
+/usr/bin/c++   -fopenmp -Wall -Dflag_supported     CMakeFiles/cmTC_5d950.dir/src.cxx.o  -o cmTC_5d950 
+make[1]: Leaving directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5f403/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5f403.dir/build.make CMakeFiles/cmTC_5f403.dir/build
+make[1]: Entering directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_5f403.dir/src.cxx.o
+/usr/bin/c++    -fopenmp -Wall -Wextra -Dflag_supported   -pedantic -std=gnu++1z -o CMakeFiles/cmTC_5f403.dir/src.cxx.o -c /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_5f403
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5f403.dir/link.txt --verbose=1
+/usr/bin/c++   -fopenmp -Wall -Wextra -Dflag_supported     CMakeFiles/cmTC_5f403.dir/src.cxx.o  -o cmTC_5f403 
+make[1]: Leaving directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1f250/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1f250.dir/build.make CMakeFiles/cmTC_1f250.dir/build
+make[1]: Entering directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_1f250.dir/src.cxx.o
+/usr/bin/c++    -fopenmp -Wall -Wextra -pedantic -Dflag_supported   -std=c++17 -std=gnu++1z -o CMakeFiles/cmTC_1f250.dir/src.cxx.o -c /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_1f250
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1f250.dir/link.txt --verbose=1
+/usr/bin/c++   -fopenmp -Wall -Wextra -pedantic -Dflag_supported     CMakeFiles/cmTC_1f250.dir/src.cxx.o  -o cmTC_1f250 
+make[1]: Leaving directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5f7ee/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5f7ee.dir/build.make CMakeFiles/cmTC_5f7ee.dir/build
+make[1]: Entering directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_5f7ee.dir/src.cxx.o
+/usr/bin/c++    -fopenmp -Dflag_supported   -Wall -std=gnu++1z -o CMakeFiles/cmTC_5f7ee.dir/src.cxx.o -c /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_5f7ee
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5f7ee.dir/link.txt --verbose=1
+/usr/bin/c++   -fopenmp -Dflag_supported     CMakeFiles/cmTC_5f7ee.dir/src.cxx.o  -o cmTC_5f7ee 
+make[1]: Leaving directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_fd847/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fd847.dir/build.make CMakeFiles/cmTC_fd847.dir/build
+make[1]: Entering directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_fd847.dir/src.cxx.o
+/usr/bin/c++    -fopenmp -Wall -Dflag_supported   -Wextra -std=gnu++1z -o CMakeFiles/cmTC_fd847.dir/src.cxx.o -c /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_fd847
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fd847.dir/link.txt --verbose=1
+/usr/bin/c++   -fopenmp -Wall -Dflag_supported     CMakeFiles/cmTC_fd847.dir/src.cxx.o  -o cmTC_fd847 
+make[1]: Leaving directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a428d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a428d.dir/build.make CMakeFiles/cmTC_a428d.dir/build
+make[1]: Entering directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_a428d.dir/src.cxx.o
+/usr/bin/c++    -fopenmp -Wall -Wextra -Dflag_supported   -pedantic -std=gnu++1z -o CMakeFiles/cmTC_a428d.dir/src.cxx.o -c /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_a428d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a428d.dir/link.txt --verbose=1
+/usr/bin/c++   -fopenmp -Wall -Wextra -Dflag_supported     CMakeFiles/cmTC_a428d.dir/src.cxx.o  -o cmTC_a428d 
+make[1]: Leaving directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_845f8/fast"
+/usr/bin/make -f CMakeFiles/cmTC_845f8.dir/build.make CMakeFiles/cmTC_845f8.dir/build
+make[1]: Entering directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_845f8.dir/src.cxx.o
+/usr/bin/c++    -fopenmp -Wall -Wextra -pedantic -Dflag_supported   -std=c++17 -std=gnu++1z -o CMakeFiles/cmTC_845f8.dir/src.cxx.o -c /home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_845f8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_845f8.dir/link.txt --verbose=1
+/usr/bin/c++   -fopenmp -Wall -Wextra -pedantic -Dflag_supported     CMakeFiles/cmTC_845f8.dir/src.cxx.o  -o cmTC_845f8 
+make[1]: Leaving directory '/home/cs18/NTRender/NaiveTinyRender/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }

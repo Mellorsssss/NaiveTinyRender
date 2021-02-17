@@ -72,6 +72,20 @@ typedef Vec3<int> Vec3i;
 
 /*** Vector ***/
 template <class T, int l>
+class Vec;
+
+template <class T, int l>
+Vec<T, l> operator+(const Vec<T, l> &v1, const Vec<T, l> &v2);
+
+template <class T, int l>
+Vec<T, l> operator-(const Vec<T, l> &v1, const Vec<T, l> &v2);
+
+template <class T, int l>
+Vec<T, l> operator*(const Vec<T, l> &v1, const Vec<T, l> &v2);
+
+template <class T, int l>
+std::ostream &operator<<(std::ostream &s, const Vec<T, l> &v);
+template <class T, int l>
 class Vec
 {
 private:
@@ -95,9 +109,13 @@ public:
         return arr_[index];
     }
 
-    friend Vec<T, l> operator+(const Vec<T, l> &v1, const Vec<T, l> &v2);
-    friend Vec<T, l> operator-(const Vec<T, l> &v1, const Vec<T, l> &v2);
-    friend Vec<T, l> operator*(const Vec<T, l> &v1, const Vec<T, l> &v2);
+    friend Vec<T, l> operator+<>(const Vec<T, l> &v1, const Vec<T, l> &v2);
+
+    friend Vec<T, l> operator-<>(const Vec<T, l> &v1, const Vec<T, l> &v2);
+
+    friend Vec<T, l> operator*<>(const Vec<T, l> &v1, const Vec<T, l> &v2);
+
+    friend std::ostream &operator<<<>(std::ostream &s, const Vec<T, l> &v);
 };
 
 template <class T, int l>
@@ -127,6 +145,21 @@ Vec<T, l> operator*(const Vec<T, l> &v1, const Vec<T, l> &v2)
     return res;
 }
 
+template <class T, int l>
+std::ostream &operator<<(std::ostream &s, const Vec<T, l> &v)
+{
+    s << "(";
+    for (int i = 0; i < v.arr_.size(); i++)
+    {
+        if (i)
+            s << ", ";
+        s << v.arr_[i];
+    }
+    s << ")\n";
+    return s;
+}
+
+typedef Vec<float, 3> vec3f;
 /*** Matrix ***/
 template <class T>
 class Matrix
@@ -139,9 +172,9 @@ public:
     Matrix(int row_num, int col_num) : row_num_(row_num), col_num_(col_num)
     {
         m_.resize(row_num);
-        for (auto row : m_)
+        for (int i = 0; i < row_num; i++)
         {
-            row.resize(col_num);
+            m_[i].resize(col_num);
         }
     }
 
@@ -172,6 +205,34 @@ public:
                 res[i][j] = 0.f;
                 for (int k = 0; k < col_num_; k++)
                     res[i][j] += m_[i][k] * M.m_[k][j];
+            }
+        }
+        return res;
+    }
+
+    Matrix<T> operator+(const Matrix &M) const
+    {
+        assert(M.row_num_ == row_num_ && M.col_num_ == col_num_);
+        Matrix<T> res(row_num_, col_num_);
+        for (int i = 0; i < row_num_; i++)
+        {
+            for (int j = 0; j < col_num_; j++)
+            {
+                res[i][j] = m_[i][j] + M.m_[i][j];
+            }
+        }
+        return res;
+    }
+
+    Matrix<T> operator-(const Matrix &M) const
+    {
+        assert(M.row_num_ == row_num_ && M.col_num_ == col_num_);
+        Matrix<T> res(row_num_, col_num_);
+        for (int i = 0; i < row_num_; i++)
+        {
+            for (int j = 0; j < col_num_; j++)
+            {
+                res[i][j] = m_[i][j] - M.m_[i][j];
             }
         }
         return res;
@@ -231,7 +292,26 @@ public:
             res[i] = GetCol(i);
         return res;
     }
+
+    template <class>
+    friend std::ostream &operator<<(std::ostream &s, Matrix<T> &m);
 };
+
+template <class T>
+std::ostream &operator<<(std::ostream &s, Matrix<T> &m)
+{
+    for (int i = 0; i < m.GetRowNumber(); i++)
+    {
+        s << "[ ";
+        for (int j = 0; j < m.GetColNumber(); j++)
+        {
+            s << m[i][j] << " ";
+        }
+        s << "]\n";
+    }
+    return s;
+}
+
 template <class t>
 std::ostream &operator<<(std::ostream &s, Vec2<t> &v)
 {
