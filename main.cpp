@@ -32,12 +32,12 @@ int main(int argc, char **argv)
     }
 
     std::vector<Triangle3D> meshs;
-    clock_t start_time, end_time;
 
     bool dirty = true;
+    double start_time_d, end_time_d;
     while (true)
     {
-        start_time = clock();
+        start_time_d = omp_get_wtime();
         meshs.clear();
         if (dirty)
         {
@@ -59,31 +59,29 @@ int main(int argc, char **argv)
                 if (light_intensity > 0)
                 {
                     auto t = Triangle3D(screen_coords[0], screen_coords[1], screen_coords[2]);
-                    for (int i = 0; i < 3; i++)
-                        t.SetUV(uv_coords[i], i);
+                    for (int ind = 0; ind < 3; ind++)
+                        t.SetUV(uv_coords[ind], ind);
                     meshs.push_back(t);
                 }
             }
-            end_time = clock();
-            std::cout << "load takes " << (end_time - start_time) << std::endl;
             rst->Render(meshs);
-
-            /* caculatate the frame per second */
-            end_time = clock();
-            float fps = 1.f / (end_time - start_time) * CLOCKS_PER_SEC;
-            std::cout << "total takes " << (end_time - start_time) << " fps :" << fps << std::endl;
 
             cv::Mat image(width, height, CV_8UC3, rst->GetBuffer());
             cv::imshow("image", image);
+
+            /* caculatate the frame per second */
+            end_time_d = omp_get_wtime();
+            double abs_fps = 1.f / (end_time_d - start_time_d);
+            std::cout << " fps :" << abs_fps << "\r" << std::flush;
         }
 
         int key = cv::waitKey(10);
         dirty = true;
         if (key == 'w')
-            dirty = true, light_dir[2] += 10;
+            dirty = true, light_dir[1] += 10;
 
         if (key == 's')
-            dirty = true, light_dir[2] -= 10;
+            dirty = true, light_dir[1] -= 10;
     }
 
     return 0;

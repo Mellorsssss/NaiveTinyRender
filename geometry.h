@@ -70,6 +70,64 @@ typedef Vec2<int> Vec2i;
 typedef Vec3<float> Vec3f;
 typedef Vec3<int> Vec3i;
 
+/*** Vector ***/
+template <class T, int l>
+class Vec
+{
+private:
+    std::vector<T> arr_;
+
+public:
+    Vec()
+    {
+        arr_.resize(l);
+    }
+
+    T operator[](int index) const
+    {
+        assert(index < l);
+        return arr_[index];
+    }
+
+    T &operator[](int index)
+    {
+        assert(index < l);
+        return arr_[index];
+    }
+
+    friend Vec<T, l> operator+(const Vec<T, l> &v1, const Vec<T, l> &v2);
+    friend Vec<T, l> operator-(const Vec<T, l> &v1, const Vec<T, l> &v2);
+    friend Vec<T, l> operator*(const Vec<T, l> &v1, const Vec<T, l> &v2);
+};
+
+template <class T, int l>
+Vec<T, l> operator+(const Vec<T, l> &v1, const Vec<T, l> &v2)
+{
+    Vec<T, l> res;
+    for (int i = 0; i < l; i++)
+        res[i] = v1[i] + v2[i];
+    return res;
+}
+
+template <class T, int l>
+Vec<T, l> operator-(const Vec<T, l> &v1, const Vec<T, l> &v2)
+{
+    Vec<T, l> res;
+    for (int i = 0; i < l; i++)
+        res[i] = v1[i] - v2[i];
+    return res;
+}
+
+template <class T, int l>
+Vec<T, l> operator*(const Vec<T, l> &v1, const Vec<T, l> &v2)
+{
+    Vec<T, l> res;
+    for (int i = 0; i < l; i++)
+        res[i] = v1[i] * v2[i];
+    return res;
+}
+
+/*** Matrix ***/
 template <class T>
 class Matrix
 {

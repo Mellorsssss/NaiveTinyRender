@@ -4,9 +4,15 @@ void Rasterizer::Render(std::vector<Triangle3D> meshs)
 {
     std::fill(z_buffer.begin(), z_buffer.end(), -9999999.f);
     img_.clear();
-    for (auto t : meshs)
+#pragma omp parallel for num_threads(4)
+    // for (auto t : meshs)
+    // {
+    //     DrawTriangle(t, white);
+    // }
+    // #pragma omp parallel for num_threads(2)
+    for (int i = 0; i < meshs.size(); i++)
     {
-        DrawTriangle(t, white);
+        DrawTriangle(meshs[i], white);
     }
     img_.flip_vertically();
 }
@@ -122,30 +128,30 @@ void Rasterizer::DrawTriangle(const Triangle3D &t, const TGAColor &color)
         bbox_max.y = std::max((int)point.y, bbox_max.y);
     }
 
-    // #pragma omp parallel for shared(z_buffer) num_threads(8)
     for (int x = bbox_min.x; x <= bbox_max.x; x++)
     {
         for (int y = bbox_min.y; y <= bbox_max.y; y++)
         {
             Vec3f P(x, y, 0);
             auto barycentric_coords = ComputeBarycentric(t, P);
-            if (barycentric_coords.x < 0 || barycentric_coords.y < 0 || barycentric_coords.z < 0)
-                continue;
-
-            P.z = BarycentricInterpolation(barycentric_coords, t.a.z, t.b.z, t.c.z);
-
-            Vec2f P_uv(0, 0);
-            P_uv = BarycentricInterpolation(barycentric_coords, t.uv_[0], t.uv_[1], t.uv_[2]);
-            if (z_buffer[get_index(x, y)] < P.z)
+            if (barycentric_coords.x >= 0 && barycentric_coords.y >= 0 && barycentric_coords.z >= 0)
             {
-                z_buffer[get_index(x, y)] = P.z;
-                float uv_u = std::round(P_uv.x * texture_.get_width());
-                float uv_v = std::round(P_uv.y * texture_.get_height());
-                img_.set(x, y, texture_.get(uv_u, uv_v));
+                P.z = BarycentricInterpolation(barycentric_coords, t.a.z, t.b.z, t.c.z);
+
+                Vec2f P_uv(0, 0);
+                P_uv = BarycentricInterpolation(barycentric_coords, t.uv_[0], t.uv_[1], t.uv_[2]);
+                if (z_buffer[get_index(x, y)] < P.z)
+                {
+                    z_buffer[get_index(x, y)] = P.z;
+                    float uv_u = std::round(P_uv.x * texture_.get_width());
+                    float uv_v = std::round(P_uv.y * texture_.get_height());
+                    img_.set(x, y, texture_.get(uv_u, uv_v));
+                }
             }
         }
     }
 }
+
 Vec3f Rasterizer::ComputeBarycentric(const Triangle3D &t, Vec3f p)
 {
     Vec3f edge_vec[2];
