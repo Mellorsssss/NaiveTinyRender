@@ -28,6 +28,8 @@ public:
 
     inline uint8_t *GetBuffer() { return img_.buffer(); }
 
+    void Output() const;
+
 private:
     inline int get_index(int x, int y)
     {

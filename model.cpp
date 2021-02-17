@@ -12,6 +12,7 @@ Model::Model(const char *filename) : verts_(), textures_(), faces_()
     if (in.fail())
         return;
     std::string line;
+    bool has_vn = false;
     while (!in.eof())
     {
         std::getline(in, line);
@@ -38,17 +39,35 @@ Model::Model(const char *filename) : verts_(), textures_(), faces_()
             continue;
         }
 
+        if (!has_vn && !line.compare(0, 2, "vn"))
+        {
+            has_vn = true;
+        }
+
         if (!line.compare(0, 2, "f "))
         {
             std::vector<face_propertes> f;
             int itrash, v_idx, vt_idx;
             iss >> trash;
-            while (iss >> v_idx >> trash >> vt_idx >> trash >> itrash)
+            if (has_vn)
             {
-                v_idx--; // in wavefront obj all indices start at 1, not zero
-                vt_idx--;
-                f.push_back(face_propertes(v_idx, vt_idx));
+                while (iss >> v_idx >> trash >> vt_idx >> trash >> itrash)
+                {
+                    v_idx--; // in wavefront obj all indices start at 1, not zero
+                    vt_idx--;
+                    f.push_back(face_propertes(v_idx, vt_idx));
+                }
             }
+            else
+            {
+                while (iss >> v_idx >> trash >> vt_idx)
+                {
+                    v_idx--; // in wavefront obj all indices start at 1, not zero
+                    vt_idx--;
+                    f.push_back(face_propertes(v_idx, vt_idx));
+                }
+            }
+
             faces_.push_back(f);
             continue;
         }

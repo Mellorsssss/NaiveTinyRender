@@ -61,6 +61,8 @@ time.h
 -
 stdio.h
 -
+string
+-
 
 /home/cs18/NTRender/NaiveTinyRender/model.cpp
 iostream

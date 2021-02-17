@@ -5,11 +5,6 @@ void Rasterizer::Render(std::vector<Triangle3D> meshs)
     std::fill(z_buffer.begin(), z_buffer.end(), -9999999.f);
     img_.clear();
 #pragma omp parallel for num_threads(4)
-    // for (auto t : meshs)
-    // {
-    //     DrawTriangle(t, white);
-    // }
-    // #pragma omp parallel for num_threads(2)
     for (int i = 0; i < meshs.size(); i++)
     {
         DrawTriangle(meshs[i], white);
@@ -17,6 +12,10 @@ void Rasterizer::Render(std::vector<Triangle3D> meshs)
     img_.flip_vertically();
 }
 
+void Rasterizer::Output() const
+{
+    img_.write_tga_file("out.tga");
+}
 bool Rasterizer::LoadTexture(std::string texture_filename)
 {
     bool is_success = texture_.read_tga_file(texture_filename);
