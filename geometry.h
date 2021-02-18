@@ -71,51 +71,72 @@ typedef Vec3<float> Vec3f;
 typedef Vec3<int> Vec3i;
 
 /*** Vector ***/
-template <class T, int l>
-class Vec;
+/* forward declarations */
+// template <class T, int l>
+// class Vec;
 
-template <class T, int l>
-Vec<T, l> operator+(const Vec<T, l> &v1, const Vec<T, l> &v2);
+// template <class T, int l>
+// Vec<T, l> operator+(const Vec<T, l> &v1, const Vec<T, l> &v2);
 
-template <class T, int l>
-Vec<T, l> operator-(const Vec<T, l> &v1, const Vec<T, l> &v2);
+// template <class T, int l>
+// Vec<T, l> operator-(const Vec<T, l> &v1, const Vec<T, l> &v2);
 
-template <class T, int l>
-Vec<T, l> operator*(const Vec<T, l> &v1, const Vec<T, l> &v2);
+// template <class T, int l>
+// Vec<T, l> operator*(const Vec<T, l> &v1, const Vec<T, l> &v2);
 
-template <class T, int l>
-std::ostream &operator<<(std::ostream &s, const Vec<T, l> &v);
+// template <class T, int l>
+// std::ostream &operator<<(std::ostream &s, const Vec<T, l> &v);
 template <class T, int l>
 class Vec
 {
 private:
-    std::vector<T> arr_;
+    T arr_[l];
 
 public:
-    Vec()
-    {
-        arr_.resize(l);
-    }
-
     T operator[](int index) const
     {
-        assert(index < l);
+        assert(index >= 0 && index < l);
         return arr_[index];
     }
 
     T &operator[](int index)
     {
-        assert(index < l);
+        assert(index >= 0 && index < l);
         return arr_[index];
     }
 
-    friend Vec<T, l> operator+<>(const Vec<T, l> &v1, const Vec<T, l> &v2);
+    T norm() const
+    {
+        T sum = 0;
+        for (int i = 0; i < l; i++)
+        {
+            sum += arr_[i] * arr_[i];
+        }
+        return std::sqrt(sum);
+    }
 
-    friend Vec<T, l> operator-<>(const Vec<T, l> &v1, const Vec<T, l> &v2);
-
-    friend Vec<T, l> operator*<>(const Vec<T, l> &v1, const Vec<T, l> &v2);
-
-    friend std::ostream &operator<<<>(std::ostream &s, const Vec<T, l> &v);
+    Vec<T, l> &normalize(T length = 1)
+    {
+        *this = (*this) * (length / norm());
+        return *this;
+    }
+    Vec<T, l> operator*(T x) const
+    {
+        Vec<T, l> res;
+        for (int i = 0; i < l; i++)
+            res[i] = arr_[i] * x;
+        return res;
+    }
+    template <class, int>
+    friend Vec<T, l> operator+(const Vec<T, l> &v1, const Vec<T, l> &v2);
+    template <class, int>
+    friend Vec<T, l> operator-(const Vec<T, l> &v1, const Vec<T, l> &v2);
+    template <class, int>
+    friend Vec<T, l> operator*(const Vec<T, l> &v1, const Vec<T, l> &v2);
+    template <class, int>
+    friend Vec<T, l> operator*(T val, const Vec<T, l> &v);
+    template <class, int>
+    friend std::ostream &operator<<(std::ostream &s, const Vec<T, l> &v);
 };
 
 template <class T, int l>
@@ -146,77 +167,73 @@ Vec<T, l> operator*(const Vec<T, l> &v1, const Vec<T, l> &v2)
 }
 
 template <class T, int l>
+Vec<T, l> operator*(T val, const Vec<T, l> &v)
+{
+    return (v * val);
+}
+
+template <class T, int l>
 std::ostream &operator<<(std::ostream &s, const Vec<T, l> &v)
 {
     s << "(";
-    for (int i = 0; i < v.arr_.size(); i++)
+    for (int i = 0; i < l; i++)
     {
         if (i)
             s << ", ";
-        s << v.arr_[i];
+        s << v[i];
     }
     s << ")\n";
     return s;
 }
 
 typedef Vec<float, 3> vec3f;
+
 /*** Matrix ***/
-template <class T>
+template <int ROW, int COL, class T>
 class Matrix
 {
 private:
-    std::vector<std::vector<T>> m_;
-    int row_num_, col_num_;
+    T m_[ROW][COL];
 
 public:
-    Matrix(int row_num, int col_num) : row_num_(row_num), col_num_(col_num)
+    int GetRowNumber() const { return ROW; }
+
+    int GetColNumber() const { return COL; }
+
+    const T *operator[](int index) const
     {
-        m_.resize(row_num);
-        for (int i = 0; i < row_num; i++)
-        {
-            m_[i].resize(col_num);
-        }
-    }
-
-    int GetRowNumber() const { return row_num_; }
-
-    int GetColNumber() const { return col_num_; }
-
-    std::vector<T> operator[](int index) const
-    {
-        assert(index < row_num_);
+        assert(0 <= index < ROW);
         return m_[index];
     }
 
-    std::vector<T> &operator[](int index)
+    T *operator[](int index)
     {
-        assert(index < row_num_);
+        assert(0 <= index < ROW);
         return m_[index];
     }
 
-    Matrix<T> operator*(const Matrix &M) const
+    template <int NEWCOL>
+    Matrix<ROW, COL, T> operator*(const Matrix<COL, NEWCOL, T> &M) const
     {
-        assert(M.GetRowNumber() == col_num_);
-        Matrix<T> res(row_num_, M.col_num_);
-        for (int i = 0; i < row_num_; i++)
+        Matrix<ROW, NEWCOL, T> res;
+        for (int i = 0; i < ROW; i++)
         {
-            for (int j = 0; j < M.col_num_; j++)
+            for (int j = 0; j < NEWCOL; j++)
             {
                 res[i][j] = 0.f;
-                for (int k = 0; k < col_num_; k++)
-                    res[i][j] += m_[i][k] * M.m_[k][j];
+                for (int k = 0; k < COL; k++)
+                    res[i][j] += m_[i][k] * M[k][j];
             }
         }
         return res;
     }
 
-    Matrix<T> operator+(const Matrix &M) const
+    Matrix<ROW, COL, T> operator+(const Matrix<ROW, COL, T> &M) const
     {
-        assert(M.row_num_ == row_num_ && M.col_num_ == col_num_);
-        Matrix<T> res(row_num_, col_num_);
-        for (int i = 0; i < row_num_; i++)
+        Matrix<ROW, COL, T> res;
+        for (int i = 0; i < ROW; i++)
         {
-            for (int j = 0; j < col_num_; j++)
+            for (int j = 0; j < COL; j++)
             {
                 res[i][j] = m_[i][j] + M.m_[i][j];
             }
@@ -224,13 +241,12 @@ public:
         return res;
     }
 
-    Matrix<T> operator-(const Matrix &M) const
+    Matrix<ROW, COL, T> operator-(const Matrix<ROW, COL, T> &M) const
     {
-        assert(M.row_num_ == row_num_ && M.col_num_ == col_num_);
-        Matrix<T> res(row_num_, col_num_);
-        for (int i = 0; i < row_num_; i++)
+        Matrix<ROW, COL, T> res;
+        for (int i = 0; i < ROW; i++)
         {
-            for (int j = 0; j < col_num_; j++)
+            for (int j = 0; j < COL; j++)
             {
                 res[i][j] = m_[i][j] - M.m_[i][j];
             }
@@ -238,67 +254,150 @@ public:
         return res;
     }
 
-    Matrix<T> Identity() const
+    bool operator==(const Matrix<ROW, COL, T> &M)
     {
-        Matrix<T> res(row_num_, col_num_);
-        for (int i = 0; i < row_num_; i++)
+        for (int i = 0; i < ROW; i++)
         {
-            for (int j = 0; j < col_num_; j++)
+            for (int j = 0; j < COL; j++)
             {
-                res[i][j] = (i == j);
+                if (m_[i][j] != M[i][j])
+                    return false;
             }
         }
+        return true;
+    }
+
+    bool operator!=(const Matrix<ROW, COL, T> &M)
+    {
+        return !(*this == M);
+    }
+
+    Vec<T, ROW> GetCol(int col_num) const
+    {
+        assert(0 <= col_num < COL);
+        Vec<T, ROW> res;
+        for (int i = 0; i < ROW; i++)
+            res[i] = m_[i][col_num];
         return res;
     }
 
-    std::vector<T> GetCol(int col_num) const
+    Vec<T, COL> GetRow(int row_num) const
     {
-        assert(col_num < col_num_);
-        std::vector<T> res;
-        res.reserve(row_num_);
-        for (int i = 0; i < row_num_; i++)
-            res.push_back(m_[i][col_num]);
+        assert(0 <= row_num < ROW);
+        Vec<T, COL> res;
+        for (int i = 0; i < COL; i++)
+            res[i] = m_[row_num][i];
         return res;
     }
 
-    std::vector<T> GetRow(int row_num) const
+    Matrix<ROW, COL, T> &SetRow(Vec<T, COL> row, int row_ind)
     {
-        assert(row_num < row_num_);
-        return m_[row_num_];
-    }
-
-    Matrix<T> &SetRow(std::vector<T> row, int row_ind)
-    {
-        assert(row.size() == col_num_);
-        m_[row_ind].clear();
-        m_[row_ind] = row;
+        assert(0 <= row_ind < ROW);
+        for (int i = 0; i < COL; i++)
+        {
+            m_[row_ind][i] = row[i];
+        }
         return *this;
     }
 
-    Matrix<T> &SetCol(std::vector<T> col, int col_ind)
+    Matrix<ROW, COL, T> &SetCol(Vec<T, ROW> col, int col_ind)
     {
-        assert(col.size() == row_num_);
-        for (int i = 0; i < row_num_; i++)
+        assert(0 <= col_ind < COL);
+        for (int i = 0; i < ROW; i++)
         {
             m_[i][col_ind] = col[i];
         }
         return *this;
     }
 
-    Matrix<T> Transpose() const
+    Matrix<COL, ROW, T> Transpose() const
     {
-        Matrix<T> res(col_num_, row_num_);
-        for (int i = 0; i < col_num_; i++)
-            res[i] = GetCol(i);
+        Matrix<COL, ROW, T> res;
+        for (int i = 0; i < COL; i++)
+            res.SetRow(this->GetCol(i), i);
         return res;
     }
 
-    template <class>
-    friend std::ostream &operator<<(std::ostream &s, Matrix<T> &m);
+    template <int, int, class>
+    friend std::ostream &operator<<(std::ostream &s, const Matrix<ROW, COL, T> &m);
+
+    Matrix<ROW, COL, T> operator*(T x) const
+    {
+        Matrix<ROW, COL, T> res;
+        for (int i = 0; i < ROW; i++)
+        {
+            for (int j = 0; j < COL; j++)
+            {
+                res[i][j] = m_[i][j] * x;
+            }
+        }
+        return res;
+    }
+
+    friend Matrix<ROW, COL, T> operator*<>(T x, const Matrix<ROW, COL, T> &M);
+
+    Matrix<ROW, COL, T> operator/(T x) const
+    {
+        Matrix<ROW, COL, T> res;
+        for (int i = 0; i < ROW; i++)
+        {
+            for (int j = 0; j < COL; j++)
+            {
+                res[i][j] = m_[i][j] / x;
+            }
+        }
+        return res;
+    }
+
+    template <int, int, class>
+    friend Matrix<ROW, COL, T> operator/(T x, const Matrix<ROW, COL, T> &M);
+
+    static Matrix<ROW, COL, T> Identity()
+    {
+        Matrix<ROW, COL, T> res;
+        for (int i = 0; i < ROW; i++)
+        {
+            for (int j = 0; j < COL; j++)
+            {
+                res.m_[i][j] = (i == j);
+            }
+        }
+        return res;
+    }
+
+    static Matrix<ROW, COL, T> Zero()
+    {
+        Matrix<ROW, COL, T> res;
+        for (int i = 0; i < ROW; i++)
+        {
+            for (int j = 0; j < COL; j++)
+            {
+                res.m_[i][j] = (T)0;
+            }
+        }
+        return res;
+    }
+
+    inline Matrix<ROW - 1, COL - 1, T> GetMinor(int row_ind, int col_ind) const
+    {
+        assert(row_ind >= 0 && col_ind >= 0 && row_ind < ROW && col_ind < COL);
+
+        Matrix<ROW - 1, COL - 1, T> res;
+        for (int i = 0; i < ROW - 1; i++)
+        {
+            for (int j = 0; j < COL - 1; j++)
+            {
+                int row_val = (i < row_ind) ? i : i + 1;
+                int col_val = (j < col_ind) ? j : j + 1;
+                res[i][j] = m_[row_val][col_val];
+            }
+        }
+        return res;
+    }
 };
 
-template <class T>
-std::ostream &operator<<(std::ostream &s, Matrix<T> &m)
+template <int ROW, int COL, class T>
+std::ostream &operator<<(std::ostream &s, const Matrix<ROW, COL, T> &m)
 {
     for (int i = 0; i < m.GetRowNumber(); i++)
     {
@@ -310,6 +409,26 @@ std::ostream &operator<<(std::ostream &s, Matrix<T> &m)
         s << "]\n";
     }
     return s;
+}
+
+template <int ROW, int COL, class T>
+Matrix<ROW, COL, T> operator*(T x, const Matrix<ROW, COL, T> &M)
+{
+    return (M * x);
+}
+
+template <int ROW, int COL, class T>
+Matrix<ROW, COL, T> operator/(T x, const Matrix<ROW, COL, T> &M)
+{
+    Matrix<ROW, COL, T> res;
+    for (int i = 0; i < ROW; i++)
+    {
+        for (int j = 0; j < COL; j++)
+        {
+            res[i][j] = x / M[i][j];
+        }
+    }
+    return res;
 }
 
 template <class t>

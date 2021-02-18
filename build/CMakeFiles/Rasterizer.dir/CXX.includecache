@@ -63,6 +63,8 @@ stdio.h
 -
 string
 -
+test.hpp
+/home/cs18/NTRender/NaiveTinyRender/test.hpp
 
 /home/cs18/NTRender/NaiveTinyRender/model.cpp
 iostream
@@ -80,6 +82,12 @@ model.h
 
 /home/cs18/NTRender/NaiveTinyRender/model.h
 vector
+-
+geometry.h
+/home/cs18/NTRender/NaiveTinyRender/geometry.h
+
+/home/cs18/NTRender/NaiveTinyRender/test.hpp
+iostream
 -
 geometry.h
 /home/cs18/NTRender/NaiveTinyRender/geometry.h
