@@ -51,8 +51,8 @@ void VectorTest()
     auto v2 = v1;
     output_vector(v1 + v2);
     output_vector(v1 - v2);
-    output_vector(v1 * v2);
-    output_vector(v1.normalize());
+    // output_vector(v1 * v2);
+    // output_vector(v1.normalize());
     for (int i = 0; i < 3; i++)
         std::cout << v1[i] << std::endl;
 }

@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 project(Rasterizer)
 
-set(CMAKE_CXX_FLAGS_DEBUG "{CMAKE_CXX_FLAGS} -o0 -ggbd")    #添加语句
-add_compile_options(-g)                                     #添加语句
-SET(CMAKE_BUILD_TYPE “DEBUG”)                               #添加语句
+# if you want to debug, then uncomment the following 3 lines
+# set(CMAKE_CXX_FLAGS_DEBUG "{CMAKE_CXX_FLAGS} -o0 -ggbd")    #添加语句
+# add_compile_options(-g)                                     #添加语句
+# SET(CMAKE_BUILD_TYPE “DEBUG”)                               #添加语句
+
 find_package(OpenCV REQUIRED)
 
 
@@ -30,8 +32,8 @@ function(enable_cxx_compiler_flag_if_supported flag)
     endif()
 endfunction()
 
-enable_cxx_compiler_flag_if_supported("-Wall")
-enable_cxx_compiler_flag_if_supported("-Wextra")
+# enable_cxx_compiler_flag_if_supported("-Wall")
+# enable_cxx_compiler_flag_if_supported("-Wextra")
 enable_cxx_compiler_flag_if_supported("-pedantic")
 enable_cxx_compiler_flag_if_supported("-std=c++17")
 # enable_cxx_compiler_flag_if_supported("-O3")

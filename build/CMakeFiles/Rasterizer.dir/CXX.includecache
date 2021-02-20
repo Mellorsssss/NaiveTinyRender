@@ -23,6 +23,8 @@ vector
 -
 omp.h
 -
+geometry.h
+/home/cs18/NTRender/NaiveTinyRender/geometry.h
 
 /home/cs18/NTRender/NaiveTinyRender/Triangle.h
 geometry.h

@@ -4,7 +4,7 @@ void Rasterizer::Render(std::vector<Triangle3D> meshs)
 {
     std::fill(z_buffer.begin(), z_buffer.end(), -9999999.f);
     img_.clear();
-#pragma omp parallel for num_threads(4)
+#pragma omp parallel for num_threads(8)
     for (int i = 0; i < meshs.size(); i++)
     {
         DrawTriangle(meshs[i], white);
@@ -127,24 +127,36 @@ void Rasterizer::DrawTriangle(const Triangle3D &t, const TGAColor &color)
         bbox_max.y = std::max((int)point.y, bbox_max.y);
     }
 
-    for (int x = bbox_min.x; x <= bbox_max.x; x++)
+    if (draw_mode_ == MODE::WIREFRAME)
     {
-        for (int y = bbox_min.y; y <= bbox_max.y; y++)
+        for (int i = 0; i < 3; i++)
         {
-            Vec3f P(x, y, 0);
-            auto barycentric_coords = ComputeBarycentric(t, P);
-            if (barycentric_coords.x >= 0 && barycentric_coords.y >= 0 && barycentric_coords.z >= 0)
-            {
-                P.z = BarycentricInterpolation(barycentric_coords, t.a.z, t.b.z, t.c.z);
+            DrawLine(t[i].x, t[i].y, t[(i + 1) % 3].x, t[(i + 1) % 3].y, white);
+        }
+        return;
+    }
 
-                Vec2f P_uv(0, 0);
-                P_uv = BarycentricInterpolation(barycentric_coords, t.uv_[0], t.uv_[1], t.uv_[2]);
-                if (z_buffer[get_index(x, y)] < P.z)
+    if (draw_mode_ == MODE::COLOR)
+    {
+        for (int x = bbox_min.x; x <= bbox_max.x; x++)
+        {
+            for (int y = bbox_min.y; y <= bbox_max.y; y++)
+            {
+                Vec3f P(x, y, 0);
+                auto barycentric_coords = ComputeBarycentric(t, P);
+                if (barycentric_coords.x >= 0 && barycentric_coords.y >= 0 && barycentric_coords.z >= 0)
                 {
-                    z_buffer[get_index(x, y)] = P.z;
-                    float uv_u = std::round(P_uv.x * texture_.get_width());
-                    float uv_v = std::round(P_uv.y * texture_.get_height());
-                    img_.set(x, y, texture_.get(uv_u, uv_v));
+                    P.z = BarycentricInterpolation(barycentric_coords, t.a.z, t.b.z, t.c.z);
+
+                    Vec2f P_uv(0, 0);
+                    P_uv = BarycentricInterpolation(barycentric_coords, t.uv_[0], t.uv_[1], t.uv_[2]);
+                    if (z_buffer[get_index(x, y)] < P.z)
+                    {
+                        z_buffer[get_index(x, y)] = P.z;
+                        float uv_u = std::round(P_uv.x * texture_.get_width());
+                        float uv_v = std::round(P_uv.y * texture_.get_height());
+                        img_.set(x, y, texture_.get(uv_u, uv_v));
+                    }
                 }
             }
         }
