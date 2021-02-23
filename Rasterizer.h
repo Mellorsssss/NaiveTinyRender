@@ -2,10 +2,11 @@
 #define RASTERIZER_H
 #include "tgaimage.h"
 #include "Triangle.h"
+#include "geometry.h"
+#include "Shader.h"
 #include <iostream>
 #include <vector>
 #include <omp.h>
-#include "geometry.h"
 
 enum class MODE
 {
@@ -24,6 +25,7 @@ private:
     int h_;
     MODE draw_mode_;
     Matrix4x4f model_, view_, projection_;
+    fragment_shader frag_shader_;
 
 public:
     Rasterizer(int w, int h) : w_(w), h_(h), draw_mode_(MODE::COLOR)
@@ -59,6 +61,11 @@ public:
     void SetProjection(const Matrix4x4f &proj)
     {
         projection_ = proj;
+    }
+
+    void SetFragmentShader(fragment_shader fs)
+    {
+        frag_shader_ = fs;
     }
 
     Matrix4x4f GetMVP() const

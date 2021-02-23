@@ -1,14 +1,25 @@
 #include "Rasterizer.h"
 #include <time.h>
+#include "utils.h"
+
 void Rasterizer::Render(std::vector<Triangle3D> meshs)
 {
+    int count = 0;
     std::fill(z_buffer.begin(), z_buffer.end(), -9999999.f);
     img_.clear();
-#pragma omp parallel for num_threads(8)
+#pragma omp parallel for num_threads(4)
     for (int i = 0; i < meshs.size(); i++)
     {
+#pragma omp critical
+        {
+            count++;
+        }
+        // UpdateProgress(1.0 * count / meshs.size());
         DrawTriangle(meshs[i], white);
     }
+
+    // UpdateProgress(1.0);
+    std::cout << std::endl;
     img_.flip_vertically();
 }
 

@@ -11,20 +11,32 @@ Rasterizer.h
 /home/cs18/NTRender/NaiveTinyRender/Rasterizer.h
 time.h
 -
+utils.h
+/home/cs18/NTRender/NaiveTinyRender/utils.h
 
 /home/cs18/NTRender/NaiveTinyRender/Rasterizer.h
 tgaimage.h
 /home/cs18/NTRender/NaiveTinyRender/tgaimage.h
 Triangle.h
 /home/cs18/NTRender/NaiveTinyRender/Triangle.h
+geometry.h
+/home/cs18/NTRender/NaiveTinyRender/geometry.h
+Shader.h
+/home/cs18/NTRender/NaiveTinyRender/Shader.h
 iostream
 -
 vector
 -
 omp.h
 -
+
+/home/cs18/NTRender/NaiveTinyRender/Shader.h
 geometry.h
 /home/cs18/NTRender/NaiveTinyRender/geometry.h
+tgaimage.h
+/home/cs18/NTRender/NaiveTinyRender/tgaimage.h
+functional
+-
 
 /home/cs18/NTRender/NaiveTinyRender/Triangle.h
 geometry.h
@@ -67,6 +79,8 @@ string
 -
 test.hpp
 /home/cs18/NTRender/NaiveTinyRender/test.hpp
+utils.h
+/home/cs18/NTRender/NaiveTinyRender/utils.h
 
 /home/cs18/NTRender/NaiveTinyRender/model.cpp
 iostream
@@ -111,4 +125,6 @@ fstream
 -
 vector
 -
+
+/home/cs18/NTRender/NaiveTinyRender/utils.h
 

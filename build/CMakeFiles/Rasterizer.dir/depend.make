@@ -3,19 +3,23 @@
 
 CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o: ../Rasterizer.cpp
 CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o: ../Rasterizer.h
+CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o: ../Shader.h
 CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o: ../Triangle.h
 CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o: ../geometry.h
 CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o: ../tgaimage.h
+CMakeFiles/Rasterizer.dir/Rasterizer.cpp.o: ../utils.h
 
 CMakeFiles/Rasterizer.dir/geometry.cpp.o: ../geometry.cpp
 
 CMakeFiles/Rasterizer.dir/main.cpp.o: ../Rasterizer.h
+CMakeFiles/Rasterizer.dir/main.cpp.o: ../Shader.h
 CMakeFiles/Rasterizer.dir/main.cpp.o: ../Triangle.h
 CMakeFiles/Rasterizer.dir/main.cpp.o: ../geometry.h
 CMakeFiles/Rasterizer.dir/main.cpp.o: ../main.cpp
 CMakeFiles/Rasterizer.dir/main.cpp.o: ../model.h
 CMakeFiles/Rasterizer.dir/main.cpp.o: ../test.hpp
 CMakeFiles/Rasterizer.dir/main.cpp.o: ../tgaimage.h
+CMakeFiles/Rasterizer.dir/main.cpp.o: ../utils.h
 
 CMakeFiles/Rasterizer.dir/model.cpp.o: ../geometry.h
 CMakeFiles/Rasterizer.dir/model.cpp.o: ../model.cpp

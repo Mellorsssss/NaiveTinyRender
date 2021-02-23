@@ -5,87 +5,6 @@
 #include <assert.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/* math lib , code from https://github.com/ssloy/tinyrenderer*/
-// template <class t>
-// struct Vec2
-// {
-//     union
-//     {
-//         struct
-//         {
-//             t u, v;
-//         };
-//         struct
-//         {
-//             t x, y;
-//         };
-//         t raw[2];
-//     };
-//     Vec2() : u(0), v(0) {}
-//     Vec2(t _u, t _v) : u(_u), v(_v) {}
-//     inline Vec2<t> operator+(const Vec2<t> &V) const { return Vec2<t>(u + V.u, v + V.v); }
-//     inline Vec2<t> operator-(const Vec2<t> &V) const { return Vec2<t>(u - V.u, v - V.v); }
-//     inline Vec2<t> operator*(float f) const { return Vec2<t>(u * f, v * f); }
-//     template <class>
-//     friend std::ostream &operator<<(std::ostream &s, Vec2<t> &v);
-// };
-
-// template <class t>
-// struct Vec3
-// {
-//     union
-//     {
-//         struct
-//         {
-//             t x, y, z;
-//         };
-//         struct
-//         {
-//             t ivert, iuv, inorm;
-//         };
-//         t raw[3];
-//     };
-//     Vec3() : x(0), y(0), z(0) {}
-//     Vec3(t _x, t _y, t _z) : x(_x), y(_y), z(_z) {}
-//     inline Vec3<t> operator^(const Vec3<t> &v) const { return Vec3<t>(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x); }
-//     inline Vec3<t> operator+(const Vec3<t> &v) const { return Vec3<t>(x + v.x, y + v.y, z + v.z); }
-//     inline Vec3<t> operator-(const Vec3<t> &v) const { return Vec3<t>(x - v.x, y - v.y, z - v.z); }
-//     inline Vec3<t> operator*(float f) const { return Vec3<t>(x * f, y * f, z * f); }
-//     inline t operator*(const Vec3<t> &v) const { return x * v.x + y * v.y + z * v.z; }
-//     inline t &operator[](int index) { return raw[index]; }
-//     inline t operator[](int index) const { return raw[index]; }
-//     float norm() const { return std::sqrt(x * x + y * y + z * z); }
-//     Vec3<t> &normalize(t l = 1)
-//     {
-//         *this = (*this) * (l / norm());
-//         return *this;
-//     }
-//     template <class>
-//     friend std::ostream &operator<<(std::ostream &s, Vec3<t> &v);
-// };
-
-// typedef Vec2<float> Vec2f;
-// typedef Vec2<int> Vec2i;
-// typedef Vec3<float> Vec3f;
-// typedef Vec3<int> Vec3i;
-
-/*** Vector ***/
-/* forward declarations */
-// template <class T, int l>
-// class Vec;
-
-// template <class T, int l>
-// Vec<T, l> operator+(const Vec<T, l> &v1, const Vec<T, l> &v2);
-
-// template <class T, int l>
-// Vec<T, l> operator-(const Vec<T, l> &v1, const Vec<T, l> &v2);
-
-// template <class T, int l>
-// Vec<T, l> operator*(const Vec<T, l> &v1, const Vec<T, l> &v2);
-
-// template <class T, int l>
-// std::ostream &operator<<(std::ostream &s, const Vec<T, l> &v);
 template <class T, int l>
 class Vec
 {
@@ -286,6 +205,7 @@ typedef Vec<int, 4> Vec4i;
 typedef Vec<float, 2> Vec2f;
 typedef Vec<float, 3> Vec3f;
 typedef Vec<float, 4> Vec4f;
+
 /*** Matrix ***/
 template <int ROW, int COL, class T>
 class Matrix
@@ -574,27 +494,69 @@ Matrix<ROW, COL, T> operator/(T x, const Matrix<ROW, COL, T> &M)
     return res;
 }
 
-typedef Matrix<4, 4, float> Matrix4x4f;
-// template <class t>
-// std::ostream &operator<<(std::ostream &s, Vec2<t> &v)
-// {
-//     s << "(" << v.x << ", " << v.y << ")\n";
-//     return s;
-// }
+template <class T>
+T Det(const Matrix<1, 1, T> &m)
+{
+    return m[0][0];
+}
 
-// template <class t>
-// std::ostream &operator<<(std::ostream &s, Vec3<t> &v)
-// {
-//     s << "(" << v.x << ", " << v.y << ", " << v.z << ")\n";
-//     return s;
-// }
+template <class T>
+T Det(const Matrix<2, 2, T> &m)
+{
+    return m[0][0] * m[1][1] - m[0][1] * m[1][0];
+}
+
+template <int ROW, int COL, class T>
+T Det(const Matrix<ROW, COL, T> &m)
+{
+    T ans = 0;
+    for (int i = 0; i < COL; i++)
+    {
+        ans += m[0][i] * Cofactor(m, 0, i);
+    }
+    return ans;
+}
+
+template <class T>
+T Cofactor(const Matrix<1, 1, T> &m, const int &row, const int &col)
+{
+    return 0;
+}
+
+template <int ROW, int COL, class T>
+T Cofactor(const Matrix<ROW, COL, T> &m, const int &row, const int &col)
+{
+    int neg = (row + col) % 2 ? 1 : -1;
+    return neg * Det(m.GetMinor(row, col));
+}
+
+template <int ROW, int COL, class T>
+Matrix<ROW, COL, T> AdjointMatrix(const Matrix<ROW, COL, T> &m)
+{
+    Matrix<ROW, COL, T> res;
+    for (int i = 0; i < ROW; i++)
+    {
+        for (int j = 0; j < COL; j++)
+        {
+            res[i][j] = Cofactor(m, j, i);
+        }
+    }
+    return res;
+}
+
+template <int ROW, class T>
+Matrix<ROW, ROW, T> InvertMatrix(const Matrix<ROW, ROW, T> &m)
+{
+    Matrix<ROW, ROW, T> res = AdjointMatrix(m);
+    T det = DotProduct(m.GetRow(0), res.GetCol(0));
+    return res / det;
+}
+
+typedef Matrix<4, 4, float> Matrix4x4f;
+
 template <class T>
 inline Vec<T, 3> CrossProduct(const Vec<T, 3> &a, const Vec<T, 3> &b) { return Vec<T, 3>(a.y * b.z - b.y * a.z,
                                                                                          b.x * a.z - a.x * b.z, a.x * b.y - a.y * b.x); };
-
-// template <class T>
-// inline T DotProduct(const Vec<T, 3> &a, const Vec<T, 3> &b) { return a.x * b.x + a.y * b.y + a.y * b.y; }
-
 template <class T, int l>
 inline T DotProduct(const Vec<T, l> &a, const Vec<T, l> &b)
 {
@@ -605,7 +567,5 @@ inline T DotProduct(const Vec<T, l> &a, const Vec<T, l> &b)
     }
     return res;
 }
-
-// Transformations/ MVP
 
 #endif //__GEOMETRY_H__

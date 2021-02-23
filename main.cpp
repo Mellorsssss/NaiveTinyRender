@@ -11,9 +11,10 @@
 #include <stdio.h>
 #include <string>
 #include "test.hpp"
+#include "utils.h"
 
-const int width = 512;
-const int height = 512;
+const int width = 1024;
+const int height = 1024;
 const int depth = 255;
 Vec3f camera(0, 0, -2);
 
@@ -64,15 +65,27 @@ Matrix4x4f Translation(float dx, float dy, float dz)
     return res;
 }
 
+Matrix4x4f RotationByY(float angle)
+{
+    Matrix4x4f res = Matrix4x4f::Identity();
+    res[0][0] = std::cos(angle);
+    res[0][2] = std::sin(angle);
+    res[2][0] = -res[0][2];
+    res[2][2] = res[0][0];
+    return res;
+}
+
 Matrix4x4f GetViewMatrix(Vec3f eye_pos, Vec3f eye_at, Vec3f eye_up)
 {
-    Matrix4x4f trans = Translation(-eye_pos[0], -eye_pos[1], -eye_pos[2]);
-    Vec3f x_dir = CrossProduct(eye_at, eye_up);
-    Vec3f neg_eye_at = eye_at * (-1);
+    Vec3f w = (eye_pos - eye_at).normalize();
+    Vec3f u = CrossProduct(eye_up, w).normalize();
+    Vec3f v = CrossProduct(w, u);
+
+    Matrix4x4f trans = Translation(-DotProduct(eye_pos, u), -DotProduct(eye_pos, v), -DotProduct(eye_pos, w)); // translate the camera to the origin
     Matrix4x4f rotate = Matrix4x4f::Identity();
-    rotate.SetRow(x_dir.ToVec4(0.f), 0);
-    rotate.SetRow(eye_up.ToVec4(0.f), 1);
-    rotate.SetRow(neg_eye_at.ToVec4(0.f), 2);
+    rotate.SetRow(u.ToVec4(0.f), 0);
+    rotate.SetRow(v.ToVec4(0.f), 1);
+    rotate.SetRow(w.ToVec4(0.f), 2);
     return rotate * trans;
 }
 
@@ -108,17 +121,17 @@ int main(int argc, char **argv)
     Model *model = NULL;
     Rasterizer *rst = new Rasterizer(width, height);
 
-    Vec3f light_dir = Vec3f(0, 0, 1);
-
+    Vec3f light_dir = Vec3f(0, 0, 0.85);
+    float angle = 0.f;
     light_dir.normalize();
     std::cout << light_dir << std::endl;
 
-    Vec3f eye_pos = Vec3f(0, 0, 1.7);
-    Vec3f eye_at = Vec3f(0, 0, -1);
+    Vec3f eye_pos = Vec3f(0, -0.5, -1.7);
+    Vec3f eye_at = Vec3f(0, 0, 0);
     Vec3f eye_up = Vec3f(0, 1, 0);
-    Matrix4x4f ModelMatrix = Scale(0.5, 0.5, 0.5);
+    Matrix4x4f ModelMatrix = RotationByY(angle); //Scale(1, 1, 1);
     Matrix4x4f View = GetViewMatrix(eye_pos, eye_at, eye_up);
-    Matrix4x4f Projection = GetPerpectiveMatrix(3.14 * 0.5f, 6 / 8.0, -1.0, -500.0f);
+    Matrix4x4f Projection = GetPerpectiveMatrix(3.14 * 0.5f, 1, 1.0, 500.0f);
     Matrix4x4f ViewPort = GetViewport(width, height); // viewport(width / 8, height / 8, width * 3 / 4, height * 3 / 4);
     Matrix4x4f MVP = ViewPort * Projection * View * ModelMatrix;
 
@@ -152,24 +165,41 @@ int main(int argc, char **argv)
         if (dirty)
         {
             View = GetViewMatrix(eye_pos, eye_at, eye_up);
-            MVP = ViewPort * Projection * View * ModelMatrix;
+            MVP = Projection * GetViewMatrix(eye_pos, eye_at, eye_up) * RotationByY(angle);
             for (int i = 0; i < model->nfaces(); i++)
             {
+                // UpdateProgress(1.0 * i / model->nfaces());
                 auto cur_face = model->face(i);
                 Vec3f screen_coords[3];
                 Vec3f world_coords[3];
                 Vec2f uv_coords[3];
+                Vec3f normal_coords[3];
+
+                bool discard = false;
                 for (int j = 0; j < 3; j++)
                 {
                     world_coords[j] = model->vert(cur_face[j].v_ind_);
                     uv_coords[j] = model->texture(cur_face[j].vt_ind_);
-                    screen_coords[j] = Vec4fToVec3f(MVP * world_coords[j].ToVec4(1.f));
+                    normal_coords[j] = model->normal(cur_face[j].vn_ind_);
+                    auto tem = MVP * world_coords[j].ToVec4(1.f);
+                    // std::cout << tem << std::endl;
+                    if (tem[2] < -tem[3] || tem[2] > tem[3])
+                        discard = true;
+                    if (tem[0] < -tem[3] || tem[0] > tem[3])
+                        discard = true;
+                    if (tem[1] < -tem[3] || tem[1] > tem[3])
+                        discard = true;
+                    if (discard)
+                        break;
+                    screen_coords[j] = Vec4fToVec3f(ViewPort * MVP * world_coords[j].ToVec4(1.f));
                 }
 
+                if (discard)
+                    continue;
                 Vec3f n = (world_coords[1] - world_coords[0]) ^ (world_coords[2] - world_coords[0]);
                 n.normalize();
                 float light_intensity = n * light_dir;
-                if (light_intensity > 1e-2)
+                if (light_intensity > 0)
                 {
                     auto t = Triangle3D(screen_coords[0], screen_coords[1], screen_coords[2]);
                     for (int ind = 0; ind < 3; ind++)
@@ -191,28 +221,42 @@ int main(int argc, char **argv)
         dirty = true;
         if (key == 'w')
         {
-            dirty = true, eye_pos[2] += 10;
+            dirty = true, eye_pos[2] += 0.2;
         }
 
         if (key == 's')
         {
-            dirty = true, eye_pos[2] -= 10;
+            dirty = true, eye_pos[2] -= 0.2;
         }
 
         if (key == 'a')
         {
-            dirty = true, eye_pos[0] += 10;
+            dirty = true, eye_pos[1] += 0.2;
         }
 
         if (key == 'd')
         {
-            dirty = true, eye_pos[0] -= 10;
+            dirty = true, eye_pos[1] -= 0.2;
         }
 
         if (key == 'q')
         {
-            rst->Output();
-            break;
+            dirty = true, eye_pos[0] += 0.2;
+        }
+
+        if (key == 'e')
+        {
+            dirty = true, eye_pos[0] -= 0.2;
+        }
+
+        if (key == 'r')
+        {
+            dirty = true, angle -= 1;
+        }
+
+        if (key == 't')
+        {
+            dirty = true, angle += 1;
         }
     }
 

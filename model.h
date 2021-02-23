@@ -10,7 +10,8 @@ struct face_propertes
 {
     int v_ind_;
     int vt_ind_;
-    face_propertes(int v_index = 0, int vt_index = 0) : v_ind_(v_index), vt_ind_(vt_index) {}
+    int vn_ind_;
+    face_propertes(int v_index = 0, int vt_index = 0, int vn_index = 0) : v_ind_(v_index), vt_ind_(vt_index), vn_ind_(vn_index) {}
 };
 
 class Model
@@ -18,6 +19,7 @@ class Model
 private:
     std::vector<Vec3f> verts_;
     std::vector<Vec2f> textures_;
+    std::vector<Vec3f> normals_;
     std::vector<std::vector<face_propertes>> faces_;
 
 public:
@@ -26,8 +28,10 @@ public:
     int nverts() const;
     int nfaces() const;
     int ntex_coords() const;
+    int nnormal_coords() const;
     Vec3f vert(int i) const;
     Vec2f texture(int i) const;
+    Vec3f normal(int i) const;
     std::vector<face_propertes> face(int idx);
 };
 

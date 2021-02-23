@@ -42,20 +42,29 @@ Model::Model(const char *filename) : verts_(), textures_(), faces_()
         if (!has_vn && !line.compare(0, 2, "vn"))
         {
             has_vn = true;
+            iss.ignore(2);
+            Vec3f vn;
+            for (int i = 0; i < 3; i++)
+            {
+                iss >> vn[i];
+            }
+            normals_.push_back(vn);
+            continue;
         }
 
         if (!line.compare(0, 2, "f "))
         {
             std::vector<face_propertes> f;
-            int itrash, v_idx, vt_idx;
+            int itrash, v_idx, vt_idx, vn_idx;
             iss >> trash;
             if (has_vn)
             {
-                while (iss >> v_idx >> trash >> vt_idx >> trash >> itrash)
+                while (iss >> v_idx >> trash >> vt_idx >> trash >> vn_idx)
                 {
                     v_idx--; // in wavefront obj all indices start at 1, not zero
                     vt_idx--;
-                    f.push_back(face_propertes(v_idx, vt_idx));
+                    vn_idx--;
+                    f.push_back(face_propertes(v_idx, vt_idx, vn_idx));
                 }
             }
             else
@@ -72,7 +81,7 @@ Model::Model(const char *filename) : verts_(), textures_(), faces_()
             continue;
         }
     }
-    std::cerr << "# v# " << verts_.size() << " vt# " << textures_.size() << " f# " << faces_.size() << std::endl;
+    std::cerr << "# v# " << verts_.size() << " vt# " << textures_.size() << " vn# " << normals_.size() << " f# " << faces_.size() << std::endl;
 }
 
 Model::~Model()
@@ -94,6 +103,11 @@ int Model::ntex_coords() const
     return (int)textures_.size();
 }
 
+int Model::nnormal_coords() const
+{
+    return (int)normals_.size();
+}
+
 std::vector<face_propertes> Model::face(int idx)
 {
     return faces_[idx];
@@ -107,4 +121,9 @@ Vec3f Model::vert(int i) const
 Vec2f Model::texture(int i) const
 {
     return textures_[i];
+}
+
+Vec3f Model::normal(int i) const
+{
+    return normals_[i];
 }
