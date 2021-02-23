@@ -14,6 +14,7 @@ CMakeFiles/Rasterizer.dir/geometry.cpp.o
 CMakeFiles/Rasterizer.dir/main.cpp.o
  /home/cs18/NTRender/NaiveTinyRender/Rasterizer.h
  /home/cs18/NTRender/NaiveTinyRender/Shader.h
+ /home/cs18/NTRender/NaiveTinyRender/TransFormation.h
  /home/cs18/NTRender/NaiveTinyRender/Triangle.h
  /home/cs18/NTRender/NaiveTinyRender/geometry.h
  /home/cs18/NTRender/NaiveTinyRender/main.cpp

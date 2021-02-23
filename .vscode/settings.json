@@ -49,6 +49,8 @@
         "set": "cpp",
         "iomanip": "cpp",
         "thread": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "functional": "cpp",
+        "iterator": "cpp"
     }
 }

@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <assert.h>
+#include <iostream>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class T, int l>
@@ -45,6 +46,11 @@ public:
         for (int i = 0; i < l; i++)
             res[i] = arr_[i] * x;
         return res;
+    }
+
+    Vec<T, l> operator/(T x) const
+    {
+        return (*this) * ((T)1 / x);
     }
     template <class, int>
     friend Vec<T, l> operator+(const Vec<T, l> &v1, const Vec<T, l> &v2);
@@ -127,6 +133,7 @@ public:
     inline Vec<T, 3> operator+(const Vec<T, 3> &v) const { return Vec<T, 3>(x + v.x, y + v.y, z + v.z); }
     inline Vec<T, 3> operator-(const Vec<T, 3> &v) const { return Vec<T, 3>(x - v.x, y - v.y, z - v.z); }
     inline Vec<T, 3> operator*(float f) const { return Vec<T, 3>(x * f, y * f, z * f); }
+    inline Vec<T, 3> operator/(float f) const { return Vec<T, 3>(x / f, y / f, z / f); }
     inline T operator*(const Vec<T, 3> &v) const { return x * v.x + y * v.y + z * v.z; }
     inline T &operator[](int index) { return raw[index]; }
     inline T operator[](int index) const { return raw[index]; }
@@ -179,6 +186,7 @@ public:
     inline Vec<T, 2> operator+(const Vec<T, 2> &V) const { return Vec<T, 2>(u + V.u, v + V.v); }
     inline Vec<T, 2> operator-(const Vec<T, 2> &V) const { return Vec<T, 2>(u - V.u, v - V.v); }
     inline Vec<T, 2> operator*(float f) const { return Vec<T, 2>(u * f, v * f); }
+    inline Vec<T, 2> operator/(float f) const { return Vec<T, 2>(u / f, v / f); }
     inline T &operator[](int index) { return raw[index]; }
     inline T operator[](int index) const { return raw[index]; }
     T norm() const

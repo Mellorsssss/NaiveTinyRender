@@ -1,20 +1,20 @@
 #include "Rasterizer.h"
-#include <time.h>
 #include "utils.h"
+#include <time.h>
 
 void Rasterizer::Render(std::vector<Triangle3D> meshs)
 {
     int count = 0;
     std::fill(z_buffer.begin(), z_buffer.end(), -9999999.f);
     img_.clear();
-#pragma omp parallel for num_threads(4)
+    //#pragma omp parallel for num_threads(8)
     for (int i = 0; i < meshs.size(); i++)
     {
 #pragma omp critical
         {
             count++;
+            // UpdateProgress(1.0 * count / meshs.size());
         }
-        // UpdateProgress(1.0 * count / meshs.size());
         DrawTriangle(meshs[i], white);
     }
 
@@ -158,15 +158,29 @@ void Rasterizer::DrawTriangle(const Triangle3D &t, const TGAColor &color)
                 if (barycentric_coords.x >= 0 && barycentric_coords.y >= 0 && barycentric_coords.z >= 0)
                 {
                     P.z = BarycentricInterpolation(barycentric_coords, t.a.z, t.b.z, t.c.z);
-
-                    Vec2f P_uv(0, 0);
-                    P_uv = BarycentricInterpolation(barycentric_coords, t.uv_[0], t.uv_[1], t.uv_[2]);
-                    if (z_buffer[get_index(x, y)] < P.z)
+                    float w_reciprocal = 1.0 / BarycentricInterpolation(barycentric_coords, t.w_[0], t.w_[1], t.w_[2]);
+                    float z_interpolated = BarycentricInterpolation(barycentric_coords, t.a[2] / t.w_[0], t.b[2] / t.w_[1], t.c[2] / t.w_[2]);
+                    z_interpolated *= w_reciprocal;
+                    if (z_buffer[get_index(x, y)] < z_interpolated)
                     {
-                        z_buffer[get_index(x, y)] = P.z;
-                        float uv_u = std::round(P_uv.x * texture_.get_width());
-                        float uv_v = std::round(P_uv.y * texture_.get_height());
-                        img_.set(x, y, texture_.get(uv_u, uv_v));
+                        Vec2f interpolated_uv(0, 0);
+                        Vec3f interpolated_normal;
+                        Vec3f interpolated_pos;
+                        Vec3f interplolated_color;
+                        interpolated_uv = BarycentricInterpolation(barycentric_coords, t.uv_[0], t.uv_[1], t.uv_[2]);
+                        interpolated_normal = BarycentricInterpolation(barycentric_coords, t.normals_[0], t.normals_[1], t.normals_[2]);
+                        interpolated_pos = BarycentricInterpolation(barycentric_coords, t.view_coords_[0], t.view_coords_[1], t.view_coords_[2]);
+                        interplolated_color = BarycentricInterpolation(barycentric_coords, t.color_[0], t.color_[1], t.color_[2]);
+
+                        fragment_shader_payload payload(interplolated_color, interpolated_normal.normalize(), interpolated_uv, &texture_);
+                        payload.view_pos = interpolated_pos;
+                        auto pixel_color = frag_shader_(payload);
+                        z_buffer[get_index(x, y)] = z_interpolated;
+                        // float uv_u = std::round(interpolated_uv.x * texture_.get_width());
+                        // float uv_v = std::round(interpolated_uv.y * texture_.get_height());
+                        // img_.set(x, y, texture_.get(uv_u, uv_v));
+
+                        img_.set(x, y, pixel_color);
                     }
                 }
             }

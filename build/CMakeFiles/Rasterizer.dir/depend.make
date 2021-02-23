@@ -13,6 +13,7 @@ CMakeFiles/Rasterizer.dir/geometry.cpp.o: ../geometry.cpp
 
 CMakeFiles/Rasterizer.dir/main.cpp.o: ../Rasterizer.h
 CMakeFiles/Rasterizer.dir/main.cpp.o: ../Shader.h
+CMakeFiles/Rasterizer.dir/main.cpp.o: ../TransFormation.h
 CMakeFiles/Rasterizer.dir/main.cpp.o: ../Triangle.h
 CMakeFiles/Rasterizer.dir/main.cpp.o: ../geometry.h
 CMakeFiles/Rasterizer.dir/main.cpp.o: ../main.cpp

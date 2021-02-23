@@ -1,8 +1,6 @@
 #ifndef RASTERIZER_H
 #define RASTERIZER_H
-#include "tgaimage.h"
 #include "Triangle.h"
-#include "geometry.h"
 #include "Shader.h"
 #include <iostream>
 #include <vector>

@@ -38,7 +38,15 @@ struct TGAColor
             bgra[i] = p[i];
     }
 
-    std::uint8_t &operator[](const int i) { return bgra[i]; }
+    std::uint8_t &operator[](const int i)
+    {
+        return bgra[i];
+    }
+
+    std::uint8_t operator[](const int i) const
+    {
+        return bgra[i];
+    }
 
     TGAColor operator*(const double intensity) const
     {

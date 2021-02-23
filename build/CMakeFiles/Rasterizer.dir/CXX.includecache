@@ -9,18 +9,14 @@
 /home/cs18/NTRender/NaiveTinyRender/Rasterizer.cpp
 Rasterizer.h
 /home/cs18/NTRender/NaiveTinyRender/Rasterizer.h
-time.h
--
 utils.h
 /home/cs18/NTRender/NaiveTinyRender/utils.h
+time.h
+-
 
 /home/cs18/NTRender/NaiveTinyRender/Rasterizer.h
-tgaimage.h
-/home/cs18/NTRender/NaiveTinyRender/tgaimage.h
 Triangle.h
 /home/cs18/NTRender/NaiveTinyRender/Triangle.h
-geometry.h
-/home/cs18/NTRender/NaiveTinyRender/geometry.h
 Shader.h
 /home/cs18/NTRender/NaiveTinyRender/Shader.h
 iostream
@@ -38,6 +34,10 @@ tgaimage.h
 functional
 -
 
+/home/cs18/NTRender/NaiveTinyRender/TransFormation.h
+geometry.h
+/home/cs18/NTRender/NaiveTinyRender/geometry.h
+
 /home/cs18/NTRender/NaiveTinyRender/Triangle.h
 geometry.h
 /home/cs18/NTRender/NaiveTinyRender/geometry.h
@@ -50,6 +50,8 @@ vector
 cmath
 -
 assert.h
+-
+iostream
 -
 
 /home/cs18/NTRender/NaiveTinyRender/main.cpp
@@ -69,6 +71,12 @@ Triangle.h
 /home/cs18/NTRender/NaiveTinyRender/Triangle.h
 Rasterizer.h
 /home/cs18/NTRender/NaiveTinyRender/Rasterizer.h
+TransFormation.h
+/home/cs18/NTRender/NaiveTinyRender/TransFormation.h
+test.hpp
+/home/cs18/NTRender/NaiveTinyRender/test.hpp
+utils.h
+/home/cs18/NTRender/NaiveTinyRender/utils.h
 opencv2/opencv.hpp
 -
 time.h
@@ -77,10 +85,6 @@ stdio.h
 -
 string
 -
-test.hpp
-/home/cs18/NTRender/NaiveTinyRender/test.hpp
-utils.h
-/home/cs18/NTRender/NaiveTinyRender/utils.h
 
 /home/cs18/NTRender/NaiveTinyRender/model.cpp
 iostream

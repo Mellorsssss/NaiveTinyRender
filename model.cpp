@@ -39,10 +39,10 @@ Model::Model(const char *filename) : verts_(), textures_(), faces_()
             continue;
         }
 
-        if (!has_vn && !line.compare(0, 2, "vn"))
+        if (!line.compare(0, 2, "vn"))
         {
             has_vn = true;
-            iss.ignore(2);
+            iss >> trash >> trash;
             Vec3f vn;
             for (int i = 0; i < 3; i++)
             {
