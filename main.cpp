@@ -26,11 +26,11 @@ Matrix4x4f MVP;
 Matrix4x4f NormalInvert;
 Matrix4x4f ViewTransformation;
 
-Vec3f light_dir = Vec3f(0, 0, 1);
+Vec3f light_dir = Vec3f(1, 1, 0.85);
 float angle = 0.f;
 
-Vec3f eye_pos = Vec3f(0, 2, -1);
-Vec3f eye_at = Vec3f(0, 2, 0);
+Vec3f eye_pos = Vec3f(0, -0.5, 1.7);
+Vec3f eye_at = Vec3f(0, 0, 0);
 Vec3f eye_up = Vec3f(0, 1, 0);
 
 struct light
@@ -270,7 +270,7 @@ TGAColor no_shader_tga(fragment_shader_payload payload)
 void UpdateTransFormation()
 {
     View = GetViewMatrix(eye_pos, eye_at, eye_up);
-    ModelMatrix = Scale(0.3, 0.3, 0.3);
+    ModelMatrix = Scale(1, 1, 1);
     ViewTransformation = View * ModelMatrix;
     MVP = Projection * ViewTransformation;
     NormalInvert = InvertMatrix(ViewTransformation).Transpose();
@@ -279,8 +279,6 @@ void UpdateTransFormation()
 void HandleInput()
 {
     int key = cv::waitKey(10);
-    std::cout << eye_pos << "\r" << std::endl
-              << std::flush;
     if (key == 'w')
     {
         eye_pos[2] += 0.2;
@@ -371,7 +369,7 @@ int main(int argc, char **argv)
     }
 
     std::vector<Triangle3D> meshs;
-    rst->SetFragmentShader(texture_fragment_shader_tga); //(texture_fragment_shader); //normal_fragment_shader);
+    rst->SetFragmentShader(no_shader_tga); //(texture_fragment_shader); //normal_fragment_shader);
     bool dirty = true;
     double start_time_d, end_time_d;
     while (true)
@@ -429,8 +427,6 @@ int main(int argc, char **argv)
             meshs.push_back(t);
         }
         rst->Render(meshs);
-        // rst->Output();
-        // return 0;
 
         cv::Mat image(width, height, CV_8UC3, rst->GetBuffer());
         cv::imshow("image", image);
@@ -438,7 +434,7 @@ int main(int argc, char **argv)
         /* caculatate the frame per second */
         end_time_d = omp_get_wtime();
         double abs_fps = 1.f / (end_time_d - start_time_d);
-        // std::cout << " fps :" << abs_fps << "\r" << std::flush;
+        std::cout << " fps :" << abs_fps << "\r" << std::flush;
 
         HandleInput();
     }
