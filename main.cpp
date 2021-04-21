@@ -372,6 +372,16 @@ int main(int argc, char **argv)
     rst->SetFragmentShader(no_shader_tga); //(texture_fragment_shader); //normal_fragment_shader);
     bool dirty = true;
     double start_time_d, end_time_d;
+
+    // prepare the coords, avoid multi-time construct 
+    Vec3f screen_coords[3];
+    Vec3f viewspace_w;
+    Vec3f world_coords[3];
+    Vec2f uv_coords[3];
+    Vec3f normal_coords[3];
+    Vec3f view_coords[3];
+
+    // Render Loop
     while (true)
     {
         UpdateTransFormation();
@@ -380,12 +390,6 @@ int main(int argc, char **argv)
         for (int i = 0; i < model->nfaces(); i++)
         {
             auto cur_face = model->face(i);
-            Vec3f screen_coords[3];
-            Vec3f viewspace_w;
-            Vec3f world_coords[3];
-            Vec2f uv_coords[3];
-            Vec3f normal_coords[3];
-            Vec3f view_coords[3];
 
             bool discard = false;
             for (int j = 0; j < 3; j++)
@@ -396,7 +400,8 @@ int main(int argc, char **argv)
                 normal_coords[j] = Vec4fToVec3f(NormalInvert * model->normal(cur_face[j].vn_ind_).ToVec4(0.f));
 
                 auto tem = MVP * world_coords[j].ToVec4(1.f);
-                // std::cout << tem << std::endl;
+
+                // discard the triangle outside the clip-space 
                 if (tem[2] < -tem[3] || tem[2] > tem[3])
                     discard = true;
                 if (tem[0] < -tem[3] || tem[0] > tem[3])
@@ -413,6 +418,7 @@ int main(int argc, char **argv)
 
             if (discard)
                 continue;
+
             Vec3f n = (world_coords[1] - world_coords[0]) ^ (world_coords[2] - world_coords[0]);
             n.normalize();
             float light_intensity = n * light_dir;
@@ -420,10 +426,10 @@ int main(int argc, char **argv)
             //     continue;
             auto t = Triangle3D(screen_coords[0], screen_coords[1], screen_coords[2], viewspace_w);
             for (int ind = 0; ind < 3; ind++)
-                t.SetUV(uv_coords[ind], ind),
-                    t.SetNormal(normal_coords[ind], ind),
-                    t.SetViewSpace(view_coords[ind], ind),
-                    t.SetColor(Vec3f(148, 121.0, 92.0), ind);
+                t.SetUV(uv_coords[ind], ind)
+                 .SetNormal(normal_coords[ind], ind)
+                 .SetViewSpace(view_coords[ind], ind)
+                 .SetColor(Vec3f(148, 121.0, 92.0), ind);
             meshs.push_back(t);
         }
         rst->Render(meshs);
@@ -436,6 +442,7 @@ int main(int argc, char **argv)
         double abs_fps = 1.f / (end_time_d - start_time_d);
         std::cout << " fps :" << abs_fps << "\r" << std::flush;
 
+        // respond to the input of user 
         HandleInput();
     }
 

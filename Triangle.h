@@ -3,6 +3,7 @@
 #include "geometry.h"
 #include <vector>
 
+/* 3D Triangle */
 class Triangle3D
 {
 public:
@@ -14,24 +15,29 @@ public:
 
     Triangle3D() : a(), b(), c(), uv_() {}
     Triangle3D(Vec3f x, Vec3f y, Vec3f z, Vec3f w) : a(x), b(y), c(z), w_(w), uv_() {}
-    void SetUV(Vec2f uv_coords, int i)
+
+    Triangle3D& SetUV(Vec2f uv_coords, int i)
     {
         uv_[i] = uv_coords;
+        return *this;
     }
 
-    void SetNormal(Vec3f normal_coords, int i)
+    Triangle3D&  SetNormal(Vec3f normal_coords, int i)
     {
         normals_[i] = normal_coords;
+        return *this;
     }
 
-    void SetViewSpace(Vec3f view_coords, int i)
+    Triangle3D& SetViewSpace(Vec3f view_coords, int i)
     {
         view_coords_[i] = view_coords;
+        return *this;
     }
 
-    void SetColor(Vec3f color, int i)
+    Triangle3D& SetColor(Vec3f color, int i)
     {
         color_[i] = color;
+        return *this;
     }
     std::vector<Vec3f> points() const { return std::vector<Vec3f>{a, b, c}; }
     Vec3f operator[](int index) const
