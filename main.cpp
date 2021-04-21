@@ -29,7 +29,7 @@ Matrix4x4f ViewTransformation;
 Vec3f light_dir = Vec3f(1, 1, 0.85);
 float angle = 0.f;
 
-Vec3f eye_pos = Vec3f(0, -0.5, 1.7);
+Vec3f eye_pos = Vec3f(0, 0.5, -1.7);
 Vec3f eye_at = Vec3f(0, 0, 0);
 Vec3f eye_up = Vec3f(0, 1, 0);
 
@@ -418,10 +418,10 @@ int main(int argc, char **argv)
 
             if (discard)
                 continue;
-
             Vec3f n = (world_coords[1] - world_coords[0]) ^ (world_coords[2] - world_coords[0]);
             n.normalize();
             float light_intensity = n * light_dir;
+            // remove the back 
             // if (light_intensity < 0)
             //     continue;
             auto t = Triangle3D(screen_coords[0], screen_coords[1], screen_coords[2], viewspace_w);
@@ -432,6 +432,7 @@ int main(int argc, char **argv)
                  .SetColor(Vec3f(148, 121.0, 92.0), ind);
             meshs.push_back(t);
         }
+        
         rst->Render(meshs);
 
         cv::Mat image(width, height, CV_8UC3, rst->GetBuffer());
@@ -440,7 +441,6 @@ int main(int argc, char **argv)
         /* caculatate the frame per second */
         end_time_d = omp_get_wtime();
         double abs_fps = 1.f / (end_time_d - start_time_d);
-        std::cout << " fps :" << abs_fps << "\r" << std::flush;
 
         // respond to the input of user 
         HandleInput();

@@ -17,9 +17,6 @@ void Rasterizer::Render(std::vector<Triangle3D> meshs)
         }
         DrawTriangle(meshs[i], white);
     }
-
-    // UpdateProgress(1.0);
-    std::cout << std::endl;
     img_.flip_vertically();
 }
 
