@@ -5,7 +5,9 @@
 #include <assert.h>
 #include <iostream>
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+ * template class for Vector
+*/
 template <class T, int l>
 class Vec
 {
@@ -111,6 +113,7 @@ std::ostream &operator<<(std::ostream &s, const Vec<T, l> &v)
     return s;
 }
 
+/* partial speicalization for Vec3*/
 template <class T>
 class Vec<T, 3>
 {
@@ -165,6 +168,7 @@ public:
     friend std::ostream &operator<<(std::ostream &s, const Vec<T, 3> &v);
 };
 
+/* partial speicalization for Vec2*/
 template <class T>
 class Vec<T, 2>
 {
@@ -207,6 +211,7 @@ public:
     friend std::ostream &operator<<(std::ostream &s, const Vec<T, 2> &v);
 };
 
+/* useful pre-define Vector */
 typedef Vec<int, 2> Vec2i;
 typedef Vec<int, 3> Vec3i;
 typedef Vec<int, 4> Vec4i;
@@ -214,7 +219,7 @@ typedef Vec<float, 2> Vec2f;
 typedef Vec<float, 3> Vec3f;
 typedef Vec<float, 4> Vec4f;
 
-/*** Matrix ***/
+/* template class for Matrix */
 template <int ROW, int COL, class T>
 class Matrix
 {
@@ -423,6 +428,9 @@ public:
         return res;
     }
 
+    /* useful matrix methods */
+
+    /* get an Identity matrix */
     static Matrix<ROW, COL, T> Identity()
     {
         Matrix<ROW, COL, T> res;
@@ -436,6 +444,7 @@ public:
         return res;
     }
 
+    /* get an zero matrix */
     static Matrix<ROW, COL, T> Zero()
     {
         Matrix<ROW, COL, T> res;
@@ -449,6 +458,7 @@ public:
         return res;
     }
 
+    /* delete one row and one col */
     inline Matrix<ROW - 1, COL - 1, T> GetMinor(int row_ind, int col_ind) const
     {
         assert(row_ind >= 0 && col_ind >= 0 && row_ind < ROW && col_ind < COL);
@@ -525,6 +535,7 @@ T Det(const Matrix<ROW, COL, T> &m)
     return ans;
 }
 
+/* caculate the CoFactor */
 template <class T>
 T Cofactor(const Matrix<1, 1, T> &m, const int &row, const int &col)
 {
